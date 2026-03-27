@@ -2,7 +2,7 @@ export const Colors = {
   // Brand
   primary: '#00D09C',
   primaryDark: '#00A87D',
-  primaryLight: '#155632',
+  primaryLight: '#33DAAD',
   primaryMuted: 'rgba(0, 208, 156, 0.12)',
 
   // Semantic
@@ -34,26 +34,47 @@ export const Colors = {
   },
 
   // Light theme
-  light: {
-    background: '#F5F7FA',
-    surface: '#FFFFFF',
-    surfaceElevated: '#FFFFFF',
-    surfaceHighlight: '#EFF3F8',
-    border: '#E2E8F0',
-    borderFaint: '#F1F5F9',
+  // light: {
+  //   background: '#F5F7FA',
+  //   surface: '#FFFFFF',
+  //   surfaceElevated: '#FFFFFF',
+  //   surfaceHighlight: '#EFF3F8',
+  //   border: '#E2E8F0',
+  //   borderFaint: '#F1F5F9',
 
-    text: '#0D1219',
-    textSecondary: '#64748B',
-    textMuted: '#94A3B8',
+  //   text: '#0D1219',
+  //   textSecondary: '#64748B',
+  //   textMuted: '#94A3B8',
+  //   textInverse: '#FFFFFF',
+
+  //   tabBar: '#FFFFFF',
+  //   header: '#FFFFFF',
+
+  //   inputBg: '#F8FAFC',
+  //   inputBorder: '#E2E8F0',
+  //   inputFocus: '#00D09C',
+  // },
+  light: {
+    background: '#F3F5F8',
+    surface: '#FAFBFC',
+    surfaceElevated: '#FFFFFF',
+    surfaceHighlight: '#F0F4F8',
+
+    border: '#D8E0EA',
+    borderFaint: '#E9EEF5',
+
+    text: '#0F172A',
+    textSecondary: '#5B6B7C',
+    textMuted: '#8A9AA9',
     textInverse: '#FFFFFF',
 
-    tabBar: '#FFFFFF',
-    header: '#FFFFFF',
+    tabBar: '#FAFBFC',
+    header: '#F3F5F8',
 
-    inputBg: '#F8FAFC',
-    inputBorder: '#E2E8F0',
+    inputBg: '#F6F8FB',
+    inputBorder: '#D8E0EA',
     inputFocus: '#00D09C',
-  },
+  }
 } as const;
 
 export const Typography = {
