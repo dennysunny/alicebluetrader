@@ -1,22 +1,22 @@
 export const Colors = {
   // Brand
-  primary: '#00D09C',
-  primaryDark: '#00A87D',
-  primaryLight: '#33DAAD',
-  primaryMuted: 'rgba(0, 208, 156, 0.12)',
+  primary: '#37a467',
+  primaryDark: '#2e8a55',
+  primaryLight: '#37a467',
+  primaryMuted: '#14B8A61A',
 
   // Semantic
-  profit: '#00D09C',
+  profit: '#03926f',
   loss: '#FF4D4D',
   warning: '#F59E0B',
   info: '#3B82F6',
 
   // Dark theme (default)
   dark: {
-    background: '#0A0E14',
-    surface: '#121820',
-    surfaceElevated: '#1A2332',
-    surfaceHighlight: '#1F2D3D',
+    background: '#0f100f',
+    surface: '#11161D',
+    surfaceElevated: '#161C24',
+    surfaceHighlight: '#1C2430',
     border: '#1E2C3A',
     borderFaint: '#151F2B',
 
@@ -34,47 +34,26 @@ export const Colors = {
   },
 
   // Light theme
-  // light: {
-  //   background: '#F5F7FA',
-  //   surface: '#FFFFFF',
-  //   surfaceElevated: '#FFFFFF',
-  //   surfaceHighlight: '#EFF3F8',
-  //   border: '#E2E8F0',
-  //   borderFaint: '#F1F5F9',
-
-  //   text: '#0D1219',
-  //   textSecondary: '#64748B',
-  //   textMuted: '#94A3B8',
-  //   textInverse: '#FFFFFF',
-
-  //   tabBar: '#FFFFFF',
-  //   header: '#FFFFFF',
-
-  //   inputBg: '#F8FAFC',
-  //   inputBorder: '#E2E8F0',
-  //   inputFocus: '#00D09C',
-  // },
   light: {
-    background: '#F3F5F8',
-    surface: '#FAFBFC',
+    background: '#F8FAFC',
+    surface: '#FFFFFF',
     surfaceElevated: '#FFFFFF',
-    surfaceHighlight: '#F0F4F8',
+    surfaceHighlight: '#F1F5F9',
+    border: '#E2E8F0',
+    borderFaint: '#F1F5F9',
 
-    border: '#D8E0EA',
-    borderFaint: '#E9EEF5',
-
-    text: '#0F172A',
-    textSecondary: '#5B6B7C',
-    textMuted: '#8A9AA9',
+    text: '#0D1219',
+    textSecondary: '#64748B',
+    textMuted: '#94A3B8',
     textInverse: '#FFFFFF',
 
-    tabBar: '#FAFBFC',
-    header: '#F3F5F8',
+    tabBar: '#FFFFFF',
+    header: '#FFFFFF',
 
-    inputBg: '#F6F8FB',
-    inputBorder: '#D8E0EA',
+    inputBg: '#F8FAFC',
+    inputBorder: '#E2E8F0',
     inputFocus: '#00D09C',
-  }
+  },
 } as const;
 
 export const Typography = {
@@ -129,23 +108,37 @@ export const Radius = {
 export const Shadow = {
   sm: {
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.12,
-    shadowRadius: 4,
-    elevation: 2,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
+    elevation: 3,
   },
   md: {
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.18,
-    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.1,
+    shadowRadius: 20,
     elevation: 6,
   },
   lg: {
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.24,
-    shadowRadius: 20,
+    shadowOffset: { width: 0, height: 16 },
+    shadowOpacity: 0.12,
+    shadowRadius: 32,
     elevation: 10,
   },
 } as const;
+
+export const glassCard = {
+  backgroundColor: 'rgba(255, 255, 255, 0.08)', // transparency
+  borderRadius: 16,
+  borderWidth: 1,
+  borderColor: 'rgba(255, 255, 255, 0.12)',
+
+  ...Shadow.md,
+};
+
+export const glassHighlight = {
+  borderTopColor: 'rgba(255,255,255,0.25)',
+  borderLeftColor: 'rgba(255,255,255,0.15)',
+};
