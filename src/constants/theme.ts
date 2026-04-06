@@ -125,7 +125,7 @@ export const Radius = {
 export const getColorIntensity = (intensity: 'lowest' | 'low' | 'medium' | 'high' | 'highest', IsDark: boolean) => {
   const opacity = { lowest: 0.10, low: 0.30, medium: 0.50, high: 0.70, highest: 0.90 }[intensity];
   if(IsDark) {
-    return `rgba(15, 22, 36, ${opacity})`;
+    return `rgba(2, 2, 2, ${opacity})`;
   } else {
     return `rgba(238, 240, 245, ${opacity})`;
   }

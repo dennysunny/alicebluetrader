@@ -13,6 +13,7 @@ import { RootNavigator } from '../alicebluetrader/src/navigation/RootNavigator';
 import { priceAlertService } from '../alicebluetrader/src/services/priceAlertService';
 import { useAuthStore } from '../alicebluetrader/src/store/authStore';
 import { Logger } from '../alicebluetrader/src/utils/logger';
+import LinearGradient from 'react-native-linear-gradient';
 
 // ============================================================
 // APP BOOTSTRAP
@@ -62,34 +63,72 @@ export default function App() {
     <ErrorBoundary>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <SafeAreaProvider>
-          <NavigationContainer
-            theme={{
-              dark: false,
-              colors: {
-                background: 'transparent',
-                card: 'transparent',
-                text: '#fff',
-                border: 'transparent',
-                notification: 'transparent',
-                primary: '#fff',
-              },
-            }}
-          >
-            <StatusBar
-              barStyle="light-content"
-              backgroundColor="transparent"
-              translucent
-            />
-            <ImageBackground
-              source={require('./src/assets/images/bg.jpg')}
+          <View style={{ flex: 1 }}>
+            {/* Base gradient */}
+            <LinearGradient
+              colors={['#040812', '#0A1324', '#02060F']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 0, y: 1 }}
               style={StyleSheet.absoluteFill}
-              resizeMode="cover"
             />
-            <View style={{ flex: 1 }}>
+
+            {/* Depth gradient */}
+            <LinearGradient
+              colors={[
+                'rgba(10,132,255,0.08)',
+                'transparent',
+                'rgba(50,212,164,0.06)',
+              ]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={StyleSheet.absoluteFill}
+            />
+
+            {/* Glow effects */}
+            {/* Green glow */}
+            <View
+              style={{
+                position: 'absolute',
+                top: -120,
+                left: '20%',
+                width: 300,
+                height: 300,
+                borderRadius: 150,
+                backgroundColor: 'rgba(50, 212, 164, 0.12)',
+              }}
+            />
+
+            {/* Blue glow */}
+            <View
+              style={{
+                position: 'absolute',
+                bottom: -100,
+                right: '10%',
+                width: 260,
+                height: 260,
+                borderRadius: 130,
+                backgroundColor: 'rgba(10, 132, 255, 0.10)',
+              }}
+            />
+
+            {/* App */}
+            <NavigationContainer
+              theme={{
+                dark: false,
+                colors: {
+                  background: 'transparent',
+                  card: 'transparent',
+                  text: '#fff',
+                  border: 'transparent',
+                  notification: 'transparent',
+                  primary: '#fff',
+                },
+              }}
+            >
               <AppBootstrap />
               <Toast position="top" topOffset={60} visibilityTime={3000} />
-            </View>
-          </NavigationContainer>
+            </NavigationContainer>
+          </View>
         </SafeAreaProvider>
       </GestureHandlerRootView>
     </ErrorBoundary>
