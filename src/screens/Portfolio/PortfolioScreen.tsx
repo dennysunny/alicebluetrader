@@ -64,7 +64,7 @@ export function PortfolioScreen() {
         ))}
       </View>
       {activeTab === 'overview' ? (
-        <ScrollView refreshControl={<RefreshControl refreshing={isLoading} onRefresh={fetchAll} tintColor={colors.primary} />} contentContainerStyle={{ padding: spacing.base, gap: spacing.base, paddingBottom: 40 }} showsVerticalScrollIndicator={false}>
+        <ScrollView refreshControl={<RefreshControl refreshing={isLoading} onRefresh={fetchAll} tintColor={colors.primary} />} contentContainerStyle={{ padding: spacing.base, gap: spacing.base, paddingBottom: 120 }} showsVerticalScrollIndicator={false}>
           {funds && (
             <View style={[styles.fundsCard, { backgroundColor: colors.surface, borderRadius: 12, borderColor: colors.border }]}>
               <Text style={{ color: colors.text, fontSize: typography.md, fontWeight: '600', marginBottom: 12 }}>Available Funds</Text>
@@ -96,7 +96,7 @@ export function PortfolioScreen() {
           renderItem={({ item }) => activeTab === 'positions' ? <PositionRow position={item as Position} onSquareOff={squareOffPosition} /> : <HoldingRow holding={item as Holding} />}
           ItemSeparatorComponent={Divider}
           ListEmptyComponent={<View style={styles.emptyState}><Text style={{ color: colors.textMuted, fontSize: 14, textAlign: 'center' }}>{activeTab === 'positions' ? 'No open positions' : 'No holdings'}</Text></View>}
-          contentContainerStyle={{ paddingBottom: 40 }}
+          contentContainerStyle={{ paddingBottom: 100 }}
         />
       )}
     </SafeAreaView>

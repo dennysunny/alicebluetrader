@@ -46,7 +46,7 @@ export function SettingsScreen() {
       <ScreenHeader title="Settings" />
 
       <ScrollView
-        contentContainerStyle={{ padding: spacing.base, gap: spacing.base, paddingBottom: 60 }}
+        contentContainerStyle={{ padding: spacing.base, gap: spacing.base, paddingBottom: 130 }}
         showsVerticalScrollIndicator={false}>
 
         {/* Profile Card */}

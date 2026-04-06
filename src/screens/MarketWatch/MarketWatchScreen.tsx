@@ -100,6 +100,7 @@ export function MarketWatchScreen() {
 
       <FlashList
         data={watchlist} keyExtractor={(item) => item.token} estimatedItemSize={72}
+        contentContainerStyle={{ paddingBottom: 120 }}
         renderItem={({ item, index }) => (
           <WatchlistRow
             item={item} index={index}

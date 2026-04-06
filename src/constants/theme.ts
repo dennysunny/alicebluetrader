@@ -1,82 +1,99 @@
 export const Colors = {
-  // Brand
-  primary: '#37a467',
-  primaryDark: '#2e8a55',
-  primaryLight: '#37a467',
-  primaryMuted: '#14B8A61A',
+  // Brand — softer, more Apple-like teal
+  primary: '#42b895',
+  primaryDark: '#25A882',
+  primaryLight: '#5EDEBC',
+  primaryMuted: 'rgba(50, 212, 164, 0.15)',
 
-  // Semantic
-  profit: '#03926f',
-  loss: '#FF4D4D',
-  warning: '#F59E0B',
-  info: '#3B82F6',
+  profit: '#289443', // Apple green
+  loss: '#FF453A', // Apple red
+  warning: '#FFD60A', // Apple yellow
+  info: '#0A84FF', // Apple blue
 
-  // Dark theme (default)
   dark: {
-    background: '#0f100f',
-    surface: '#11161D',
-    surfaceElevated: '#161C24',
-    surfaceHighlight: '#1C2430',
-    border: '#1E2C3A',
-    borderFaint: '#151F2B',
+    // Deep navy-black base — not pure black, more like iOS dark
+    background: '#080C14',
+    backgroundGradientTop: '#0D1526',
+    backgroundGradientBottom: '#070A10',
 
-    text: '#E8EDF3',
-    textSecondary: '#7A8FA6',
-    textMuted: '#4A5E6E',
-    textInverse: '#0A0E14',
+    // Frosted glass surfaces — semi-transparent white over dark
+    surface: 'rgba(255, 255, 255, 0.06)',
+    surfaceElevated: 'rgba(255, 255, 255, 0.10)',
+    surfaceHighlight: 'rgba(255, 255, 255, 0.14)',
+    surfaceStrong: 'rgba(255, 255, 255, 0.18)',
 
-    tabBar: '#0D1219',
-    header: '#0A0E14',
+    // Borders — very subtle white lines like iOS
+    border: 'rgba(255, 255, 255, 0.10)',
+    borderFaint: 'rgba(255, 255, 255, 0.05)',
+    borderStrong: 'rgba(255, 255, 255, 0.18)',
 
-    inputBg: '#161E28',
-    inputBorder: '#1E2C3A',
-    inputFocus: '#00D09C',
+    // Typography — pure whites with varying opacity
+    text: 'rgba(255, 255, 255, 0.95)',
+    textSecondary: 'rgba(255, 255, 255, 0.55)',
+    textMuted: 'rgb(81, 83, 79)',
+    textInverse: '#080C14',
+
+    tabBar: 'rgba(10, 14, 22, 1)',
+    header: 'rgba(8, 12, 20, 0.92)',
+
+    inputBg: 'rgba(255, 255, 255, 0.07)',
+    inputBorder: 'rgba(255, 255, 255, 0.12)',
+    inputFocus: '#32D4A4',
+
+    primaryText: '#42b895',
+    fallback: '#121820',
   },
 
-  // Light theme
   light: {
-    background: '#F8FAFC',
-    surface: '#FFFFFF',
-    surfaceElevated: '#FFFFFF',
-    surfaceHighlight: '#F1F5F9',
-    border: '#E2E8F0',
-    borderFaint: '#F1F5F9',
+    background: '#F2F4F8',
+    backgroundGradientTop: 'rgb(238, 241, 247)',
+    backgroundGradientBottom: '#F6F8FB',
 
-    text: '#0D1219',
-    textSecondary: '#64748B',
-    textMuted: '#94A3B8',
+    // Frosted glass — semi-transparent white, iOS vibrancy style
+    surface: 'rgba(255, 255, 255, 0.72)',
+    surfaceElevated: 'rgba(255, 255, 255, 0.88)',
+    surfaceHighlight: 'rgba(255, 255, 255, 0.95)',
+    surfaceStrong: '#FFFFFF',
+
+    border: 'rgba(0, 0, 0, 0.07)',
+    borderFaint: 'rgba(0, 0, 0, 0.04)',
+    borderStrong: 'rgba(0, 0, 0, 0.14)',
+
+    text: 'rgba(0, 0, 0, 0.90)',
+    textSecondary: 'rgba(0, 0, 0, 0.50)',
+    textMuted: 'rgba(0, 0, 0, 0.30)',
     textInverse: '#FFFFFF',
 
-    tabBar: '#FFFFFF',
-    header: '#FFFFFF',
+    tabBar: 'rgba(255, 255, 255, 1)',
+    header: 'rgba(242, 244, 248, 0.92)',
 
-    inputBg: '#F8FAFC',
-    inputBorder: '#E2E8F0',
-    inputFocus: '#00D09C',
+    inputBg: 'rgba(255, 255, 255, 0.80)',
+    inputBorder: 'rgba(0, 0, 0, 0.10)',
+    inputFocus: '#065940',
+    primaryText: '#033e2d',
+
+    fallback: '#FFFFFF',
   },
 } as const;
 
 export const Typography = {
-  // Font families
   fontRegular: 'System',
   fontMedium: 'System',
   fontSemiBold: 'System',
   fontBold: 'System',
-  fontMono: 'Courier New',
+  fontMono: 'Menlo',
 
-  // Font sizes
-  xs: 10,
-  sm: 12,
-  base: 14,
-  md: 16,
-  lg: 18,
-  xl: 20,
-  '2xl': 24,
-  '3xl': 28,
-  '4xl': 32,
-  '5xl': 40,
+  xs: 11,
+  sm: 13,
+  base: 15,
+  md: 17,
+  lg: 19,
+  xl: 21,
+  '2xl': 26,
+  '3xl': 30,
+  '4xl': 34,
+  '5xl': 42,
 
-  // Line heights
   tight: 1.2,
   normal: 1.5,
   relaxed: 1.75,
@@ -96,49 +113,53 @@ export const Spacing = {
 } as const;
 
 export const Radius = {
-  xs: 4,
-  sm: 8,
-  md: 12,
-  lg: 16,
-  xl: 20,
-  '2xl': 24,
+  xs: 6,
+  sm: 10,
+  md: 14,
+  lg: 18,
+  xl: 22,
+  '2xl': 28,
   full: 999,
 } as const;
 
+export const getColorIntensity = (intensity: 'lowest' | 'low' | 'medium' | 'high' | 'highest', IsDark: boolean) => {
+  const opacity = { lowest: 0.10, low: 0.30, medium: 0.50, high: 0.70, highest: 0.90 }[intensity];
+  if(IsDark) {
+    return `rgba(15, 22, 36, ${opacity})`;
+  } else {
+    return `rgba(238, 240, 245, ${opacity})`;
+  }
+};
+
+// Frosted glass shadow — softer, more diffuse than before
 export const Shadow = {
   sm: {
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
-    shadowRadius: 12,
+    shadowRadius: 8,
     elevation: 3,
   },
   md: {
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.1,
-    shadowRadius: 20,
-    elevation: 6,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.14,
+    shadowRadius: 18,
+    elevation: 8,
   },
   lg: {
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 16 },
-    shadowOpacity: 0.12,
-    shadowRadius: 32,
-    elevation: 10,
+    shadowOffset: { width: 0, height: 12 },
+    shadowOpacity: 0.2,
+    shadowRadius: 30,
+    elevation: 14,
+  },
+  // Glow shadow for primary elements
+  glow: {
+    shadowColor: '#32D4A4',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.35,
+    shadowRadius: 16,
+    elevation: 8,
   },
 } as const;
-
-export const glassCard = {
-  backgroundColor: 'rgba(255, 255, 255, 0.08)', // transparency
-  borderRadius: 16,
-  borderWidth: 1,
-  borderColor: 'rgba(255, 255, 255, 0.12)',
-
-  ...Shadow.md,
-};
-
-export const glassHighlight = {
-  borderTopColor: 'rgba(255,255,255,0.25)',
-  borderLeftColor: 'rgba(255,255,255,0.15)',
-};

@@ -9,7 +9,7 @@ import { Colors, Typography, Spacing, Radius, Shadow } from '../constants/theme'
 type ThemeMode = 'dark' | 'light';
 
 export function useTheme() {
-  const systemScheme = useColorScheme();
+const systemScheme = useColorScheme();
   const mode: ThemeMode = systemScheme === 'light' ? 'light' : 'dark';
 
   const theme = useMemo(() => {

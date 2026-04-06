@@ -1,21 +1,22 @@
 import { MMKV } from 'react-native-mmkv';
 
-// ============================================================
-// STORAGE UTILITY - Uses MMKV (10x faster than AsyncStorage)
-// For sensitive data, use Keychain (see authService.ts)
-// ============================================================
+let storage: MMKV | null = null;
 
-export const storage = new MMKV({
-  id: 'aliceblu-storage',
-  encryptionKey: 'aliceblu-mmkv-key', // rotate per build in production
-});
+const getStorage = (): MMKV => {
+  if (!storage) {
+    storage = new MMKV({
+      id: 'aliceblu-storage',
+      encryptionKey: 'aliceblu-mmkv-key',
+    });
+  }
+  return storage;
+};
 
-// Type-safe helpers
 export const StorageHelper = {
   getJson: <T>(key: string): T | null => {
-    const raw = storage.getString(key);
-    if (!raw) return null;
     try {
+      const raw = getStorage().getString(key);
+      if (!raw) return null;
       return JSON.parse(raw) as T;
     } catch {
       return null;
@@ -23,14 +24,22 @@ export const StorageHelper = {
   },
 
   setJson: <T>(key: string, value: T): void => {
-    storage.set(key, JSON.stringify(value));
+    try {
+      getStorage().set(key, JSON.stringify(value));
+    } catch (e) {
+      console.error('MMKV set error:', e);
+    }
   },
 
   remove: (key: string): void => {
-    storage.delete(key);
+    try {
+      getStorage().delete(key);
+    } catch {}
   },
 
   clear: (): void => {
-    storage.clearAll();
+    try {
+      getStorage().clearAll();
+    } catch {}
   },
 };

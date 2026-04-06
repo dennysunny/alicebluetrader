@@ -1,26 +1,24 @@
-import React, { useEffect, useState, useCallback, memo } from 'react';
+import { FlashList } from '@shopify/flash-list';
+import React, { memo, useEffect, useState } from 'react';
 import {
-  View,
+  Alert,
+  RefreshControl,
+  StyleSheet,
   Text,
   TouchableOpacity,
-  RefreshControl,
-  ScrollView,
-  StyleSheet,
-  Alert,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { FlashList } from '@shopify/flash-list';
-import { useOrdersStore, useOrders, useOpenOrders } from '../../store/ordersStore';
+import { Divider, ScreenHeader } from '../../components/common';
+import { ORDER_STATUS_COLORS } from '../../constants';
 import { useTheme } from '../../hooks/useTheme';
 import {
-  ScreenHeader,
-  Badge,
-  Divider,
-  Card,
-} from '../../components/common';
-import { formatCurrency, formatDateTime } from '../../utils/formatters';
-import { ORDER_STATUS_COLORS } from '../../constants';
+  useOpenOrders,
+  useOrders,
+  useOrdersStore,
+} from '../../store/ordersStore';
 import type { Order } from '../../types';
+import { formatCurrency, formatDateTime } from '../../utils/formatters';
 
 type TabType = 'orders' | 'open';
 
@@ -40,7 +38,8 @@ export function OrdersScreen() {
   return (
     <SafeAreaView
       style={{ flex: 1, backgroundColor: colors.background }}
-      edges={['top']}>
+      edges={['top']}
+    >
       <ScreenHeader
         title="Orders"
         subtitle={`${allOrders.length} orders today`}
@@ -51,11 +50,14 @@ export function OrdersScreen() {
         style={[
           styles.tabsContainer,
           { marginHorizontal: spacing.base, borderColor: colors.border },
-        ]}>
-        {([
-          { key: 'orders', label: `All (${allOrders.length})` },
-          { key: 'open', label: `Open (${openOrders.length})` },
-        ] as { key: TabType; label: string }[]).map((tab) => (
+        ]}
+      >
+        {(
+          [
+            { key: 'orders', label: `All (${allOrders.length})` },
+            { key: 'open', label: `Open (${openOrders.length})` },
+          ] as { key: TabType; label: string }[]
+        ).map(tab => (
           <TouchableOpacity
             key={tab.key}
             onPress={() => setActiveTab(tab.key)}
@@ -65,14 +67,16 @@ export function OrdersScreen() {
                 borderBottomColor: colors.primary,
                 borderBottomWidth: 2,
               },
-            ]}>
+            ]}
+          >
             <Text
               style={{
                 color:
                   activeTab === tab.key ? colors.primary : colors.textSecondary,
                 fontWeight: activeTab === tab.key ? '600' : '400',
                 fontSize: 14,
-              }}>
+              }}
+            >
               {tab.label}
             </Text>
           </TouchableOpacity>
@@ -81,7 +85,8 @@ export function OrdersScreen() {
 
       <FlashList
         data={data}
-        keyExtractor={(item) => item.orderId}
+        keyExtractor={item => item.orderId}
+        contentContainerStyle={{ paddingBottom: 120 }}
         estimatedItemSize={100}
         refreshControl={
           <RefreshControl
@@ -96,14 +101,19 @@ export function OrdersScreen() {
         ItemSeparatorComponent={Divider}
         ListEmptyComponent={
           <View style={styles.emptyState}>
-            <Text style={{ color: colors.textMuted, fontSize: 14, textAlign: 'center' }}>
+            <Text
+              style={{
+                color: colors.textMuted,
+                fontSize: 14,
+                textAlign: 'center',
+              }}
+            >
               {activeTab === 'open'
                 ? 'No open orders'
                 : 'No orders placed today'}
             </Text>
           </View>
         }
-        contentContainerStyle={{ paddingBottom: 32 }}
       />
     </SafeAreaView>
   );
@@ -125,18 +135,14 @@ const OrderCard = memo(function OrderCard({
   const statusColor = ORDER_STATUS_COLORS[order.status] ?? colors.textSecondary;
 
   const handleCancel = () => {
-    Alert.alert(
-      'Cancel Order',
-      `Cancel order for ${order.symbol}?`,
-      [
-        { text: 'No', style: 'cancel' },
-        {
-          text: 'Cancel Order',
-          style: 'destructive',
-          onPress: () => onCancel(order.orderId),
-        },
-      ],
-    );
+    Alert.alert('Cancel Order', `Cancel order for ${order.symbol}?`, [
+      { text: 'No', style: 'cancel' },
+      {
+        text: 'Cancel Order',
+        style: 'destructive',
+        onPress: () => onCancel(order.orderId),
+      },
+    ]);
   };
 
   return (
@@ -144,7 +150,8 @@ const OrderCard = memo(function OrderCard({
       style={[
         styles.orderCard,
         { paddingHorizontal: spacing.base, paddingVertical: spacing.md },
-      ]}>
+      ]}
+    >
       {/* Row 1: Symbol + Status */}
       <View style={styles.row}>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
@@ -157,17 +164,25 @@ const OrderCard = memo(function OrderCard({
                   : `${colors.loss}20`,
                 borderRadius: radius.xs,
               },
-            ]}>
+            ]}
+          >
             <Text
               style={{
                 color: isBuy ? colors.profit : colors.loss,
                 fontSize: typography.xs,
                 fontWeight: '700',
-              }}>
+              }}
+            >
               {order.transactionType}
             </Text>
           </View>
-          <Text style={{ color: colors.text, fontSize: typography.md, fontWeight: '600' }}>
+          <Text
+            style={{
+              color: colors.text,
+              fontSize: typography.md,
+              fontWeight: '600',
+            }}
+          >
             {order.symbol}
           </Text>
         </View>
@@ -177,8 +192,15 @@ const OrderCard = memo(function OrderCard({
             paddingVertical: 3,
             borderRadius: radius.full,
             backgroundColor: `${statusColor}18`,
-          }}>
-          <Text style={{ color: statusColor, fontSize: typography.xs, fontWeight: '600' }}>
+          }}
+        >
+          <Text
+            style={{
+              color: statusColor,
+              fontSize: typography.xs,
+              fontWeight: '600',
+            }}
+          >
             {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
           </Text>
         </View>
@@ -197,13 +219,14 @@ const OrderCard = memo(function OrderCard({
       {/* Row 3: Qty + Price */}
       <View style={[styles.row, { marginTop: 8 }]}>
         <View style={styles.row}>
-          <MetaChip label="Qty" value={`${order.filledQuantity}/${order.quantity}`} />
+          <MetaChip
+            label="Qty"
+            value={`${order.filledQuantity}/${order.quantity}`}
+          />
           <MetaChip
             label="Price"
             value={
-              order.orderType === 'MARKET'
-                ? 'MKT'
-                : formatCurrency(order.price)
+              order.orderType === 'MARKET' ? 'MKT' : formatCurrency(order.price)
             }
           />
           {order.avgPrice > 0 && (
@@ -218,7 +241,8 @@ const OrderCard = memo(function OrderCard({
                 color: colors.loss,
                 fontSize: typography.xs,
                 fontWeight: '600',
-              }}>
+              }}
+            >
               Cancel
             </Text>
           </TouchableOpacity>
@@ -232,7 +256,8 @@ const OrderCard = memo(function OrderCard({
             color: colors.loss,
             fontSize: typography.xs,
             marginTop: 6,
-          }}>
+          }}
+        >
           {order.statusMessage}
         </Text>
       )}
@@ -245,7 +270,13 @@ function MetaChip({ label, value }: { label: string; value: string }) {
   return (
     <View style={{ marginRight: 12 }}>
       <Text style={{ color: colors.textMuted, fontSize: 10 }}>{label}</Text>
-      <Text style={{ color: colors.text, fontSize: typography.xs, fontWeight: '600' }}>
+      <Text
+        style={{
+          color: colors.text,
+          fontSize: typography.xs,
+          fontWeight: '600',
+        }}
+      >
         {value}
       </Text>
     </View>

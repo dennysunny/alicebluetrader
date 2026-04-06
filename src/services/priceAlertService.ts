@@ -37,7 +37,9 @@ class PriceAlertService {
     this.unsubTick = null;
   }
 
-  addAlert(alert: Omit<PriceAlert, 'id' | 'isTriggered' | 'createdAt'>): PriceAlert {
+  addAlert(
+    alert: Omit<PriceAlert, 'id' | 'isTriggered' | 'createdAt'>,
+  ): PriceAlert {
     const newAlert: PriceAlert = {
       ...alert,
       id: `alert_${Date.now()}`,
@@ -48,7 +50,10 @@ class PriceAlertService {
     this.alerts.set(newAlert.id, newAlert);
     this.persistAlerts();
 
-    Logger.info('Price alert added', { symbol: alert.symbol, target: alert.targetPrice });
+    Logger.info('Price alert added', {
+      symbol: alert.symbol,
+      target: alert.targetPrice,
+    });
     return newAlert;
   }
 
@@ -58,7 +63,7 @@ class PriceAlertService {
   }
 
   getAlerts(): PriceAlert[] {
-    return Array.from(this.alerts.values()).filter((a) => !a.isTriggered);
+    return Array.from(this.alerts.values()).filter(a => !a.isTriggered);
   }
 
   getAllAlerts(): PriceAlert[] {
@@ -88,24 +93,49 @@ class PriceAlertService {
 
       if (triggered) {
         alert.isTriggered = true;
-        NotificationService.priceAlert(alert.symbol, tick.ltp, alert.targetPrice);
-        Logger.info('Price alert triggered', { symbol: alert.symbol, target: alert.targetPrice });
+        NotificationService.priceAlert(
+          alert.symbol,
+          tick.ltp,
+          alert.targetPrice,
+        );
+        Logger.info('Price alert triggered', {
+          symbol: alert.symbol,
+          target: alert.targetPrice,
+        });
         this.persistAlerts();
       }
     }
   }
 
   private loadAlerts(): void {
-    const saved = StorageHelper.getJson<PriceAlert[]>(ALERTS_STORAGE_KEY);
-    if (saved) {
-      saved
-        .filter((a) => !a.isTriggered)
-        .forEach((a) => this.alerts.set(a.id, a));
+    try {
+      const saved = StorageHelper.getJson<PriceAlert[]>(ALERTS_STORAGE_KEY);
+      if (saved) {
+        saved
+          .filter(a => !a.isTriggered)
+          .forEach(a => this.alerts.set(a.id, a));
+      }
+    } catch (error) {
+      // MMKV not available (e.g. remote debugger active) — start with empty alerts
+      Logger.warn(
+        'PriceAlertService: storage unavailable, skipping alert restore',
+        error,
+      );
     }
   }
 
   private persistAlerts(): void {
-    StorageHelper.setJson(ALERTS_STORAGE_KEY, Array.from(this.alerts.values()));
+    try {
+      StorageHelper.setJson(
+        ALERTS_STORAGE_KEY,
+        Array.from(this.alerts.values()),
+      );
+    } catch (error) {
+      Logger.warn(
+        'PriceAlertService: storage unavailable, skipping persist',
+        error,
+      );
+    }
   }
 }
 

@@ -1,21 +1,92 @@
+import { BlurView } from '@react-native-community/blur';
 import React, { memo } from 'react';
 import {
-  View,
+  ActivityIndicator,
+  Platform,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  ActivityIndicator,
-  StyleSheet,
-  type ViewStyle,
-  type TextStyle,
+  View,
   type TextInputProps,
+  type TextStyle,
+  type ViewStyle,
 } from 'react-native';
 import Animated, {
-  useSharedValue,
   useAnimatedStyle,
+  useSharedValue,
   withSpring,
 } from 'react-native-reanimated';
+import { getColorIntensity } from '../../constants/theme';
 import { useTheme } from '../../hooks/useTheme';
+
+// ============================================================
+// GLASS CARD — the core frosted glass primitive
+// ============================================================
+
+interface GlassCardProps {
+  children: React.ReactNode;
+  style?: ViewStyle;
+  onPress?: () => void;
+  intensity?: 'low' | 'medium' | 'high';
+}
+
+export const GlassCard = memo(function GlassCard({
+  children,
+  style,
+  onPress,
+  intensity = 'lowest',
+}: GlassCardProps) {
+  const { radius, shadow, isDark, colors } = useTheme();
+
+  const content = (
+    <View
+      style={[
+        {
+          borderRadius: radius.xl,
+          borderWidth: StyleSheet.hairlineWidth,
+          borderColor: colors.border,
+          overflow: 'hidden', // clips BlurView + tint to border radius
+          ...shadow.md,
+        },
+        style,
+      ]}
+    >
+      {/* Layer 1: Real blur — fills the card behind content */}
+      <BlurView
+        style={StyleSheet.absoluteFill}
+        blurType={isDark ? 'dark' : 'light'}
+        blurAmount={Platform.OS === 'ios' ? 20 : 10}
+        reducedTransparencyFallbackColor={colors.fallback}
+      />
+
+      {/* Layer 2: Colour tint over the blur */}
+      <View
+        style={[
+          StyleSheet.absoluteFill,
+          {
+            backgroundColor: getColorIntensity(intensity, isDark),
+          },
+        ]}
+      />
+
+      {/* Layer 3: Actual content — must be relative so it sits above absolute layers */}
+      <View style={{ position: 'relative', zIndex: 2 }}>{children}</View>
+    </View>
+  );
+
+  if (onPress) {
+    return (
+      <TouchableOpacity onPress={onPress} activeOpacity={0.82}>
+        {content}
+      </TouchableOpacity>
+    );
+  }
+  return content;
+});
+
+// Keep Card as alias for backward compat
+export const Card = GlassCard;
 
 // ============================================================
 // BUTTON
@@ -42,59 +113,90 @@ export const Button = memo(function Button({
   style,
   fullWidth = false,
 }: ButtonProps) {
-  const { colors, radius, typography } = useTheme();
+  const { colors, radius, typography, shadow } = useTheme();
   const scale = useSharedValue(1);
 
   const animStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
   }));
 
-  const handlePressIn = () => {
-    scale.value = withSpring(0.97, { damping: 15 });
+  const config: Record<
+    string,
+    { bg: string; text: string; border?: string; shadow?: object }
+  > = {
+    primary: {
+      bg: colors.primary,
+      text: colors.textInverse,
+      shadow: shadow.glow,
+    },
+    secondary: {
+      bg: colors.surfaceElevated,
+      text: colors.text,
+      border: colors.border,
+    },
+    danger: {
+      bg: `${colors.loss}22`,
+      text: colors.loss,
+      border: `${colors.loss}40`,
+    },
+    ghost: {
+      bg: 'transparent',
+      text: colors.primary,
+      border: `${colors.primary}50`,
+    },
   };
-  const handlePressOut = () => {
-    scale.value = withSpring(1, { damping: 15 });
-  };
 
-  const bgColor = {
-    primary: colors.primary,
-    secondary: colors.surfaceElevated,
-    danger: colors.loss,
-    ghost: 'transparent',
-  }[variant];
-
-  const textColor = {
-    primary: colors.textInverse,
-    secondary: colors.text,
-    danger: '#FFFFFF',
-    ghost: colors.primary,
-  }[variant];
-
-  const height = { sm: 36, md: 44, lg: 52 }[size];
-  const fontSize = { sm: typography.sm, md: typography.base, lg: typography.md }[size];
+  const c = config[variant];
+  const height = { sm: 38, md: 50, lg: 56 }[size];
+  const fontSize = {
+    sm: typography.sm,
+    md: typography.base,
+    lg: typography.md,
+  }[size];
 
   return (
     <Animated.View style={[animStyle, fullWidth && { width: '100%' }]}>
       <TouchableOpacity
         onPress={onPress}
-        onPressIn={handlePressIn}
-        onPressOut={handlePressOut}
+        onPressIn={() => {
+          scale.value = withSpring(0.96, { damping: 18 });
+        }}
+        onPressOut={() => {
+          scale.value = withSpring(1, { damping: 18 });
+        }}
         disabled={disabled || loading}
-        activeOpacity={0.9}
+        activeOpacity={1}
         style={[
           {
             height,
-            backgroundColor: bgColor,
-            borderRadius: radius.md,
+            backgroundColor: c.bg,
+            borderRadius: radius.lg,
             alignItems: 'center',
             justifyContent: 'center',
-            paddingHorizontal: 20,
-            opacity: disabled ? 0.5 : 1,
-            borderWidth: variant === 'ghost' ? 1 : 0,
-            borderColor: variant === 'ghost' ? colors.primary : 'transparent',
+            paddingHorizontal: 24,
+            opacity: disabled ? 0.4 : 1,
+            borderWidth: c.border ? 1 : 0,
+            borderColor: c.border ?? 'transparent',
+            ...(variant === 'primary' ? c.shadow : {}),
           },
           style,
-        ]}>
+        ]}
+      >
+        {/* Top shimmer on primary */}
+        {variant === 'primary' && !loading && (
+          <View
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: '15%',
+              right: '15%',
+              height: '50%',
+              backgroundColor: 'rgba(255,255,255,0.18)',
+              borderBottomLeftRadius: 999,
+              borderBottomRightRadius: 999,
+            }}
+          />
+        )}
         {loading ? (
           <ActivityIndicator
             size="small"
@@ -103,11 +205,13 @@ export const Button = memo(function Button({
         ) : (
           <Text
             style={{
-              color: textColor,
+              color: c.text,
               fontSize,
               fontWeight: '600',
-              letterSpacing: 0.3,
-            }}>
+              letterSpacing: 0.2,
+              zIndex: 1,
+            }}
+          >
             {label}
           </Text>
         )}
@@ -123,7 +227,7 @@ export const Button = memo(function Button({
 interface InputProps extends TextInputProps {
   label?: string;
   error?: string;
-  suffix?: string;
+  suffix?: React.ReactNode | string;
   prefix?: string;
 }
 
@@ -138,32 +242,40 @@ export const Input = memo(function Input({
   const { colors, typography, radius, spacing } = useTheme();
 
   return (
-    <View style={{ gap: 6 }}>
+    <View style={{ gap: 7 }}>
       {label && (
         <Text
           style={{
             color: colors.textSecondary,
             fontSize: typography.sm,
             fontWeight: '500',
-          }}>
+            letterSpacing: 0.3,
+          }}
+        >
           {label}
         </Text>
       )}
       <View
-        style={[
-          {
-            flexDirection: 'row',
-            alignItems: 'center',
-            backgroundColor: colors.inputBg,
-            borderRadius: radius.md,
-            borderWidth: 1,
-            borderColor: error ? colors.loss : colors.inputBorder,
-            paddingHorizontal: spacing.md,
-            height: 48,
-          },
-        ]}>
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: colors.inputBg,
+          borderRadius: radius.lg,
+          borderWidth: 1,
+          borderColor: error ? colors.loss : colors.inputBorder,
+          paddingHorizontal: spacing.md,
+          height: 52,
+        }}
+      >
         {prefix && (
-          <Text style={{ color: colors.textSecondary, marginRight: 8, fontSize: typography.md }}>
+          <Text
+            style={{
+              color: colors.textSecondary,
+              marginRight: 8,
+              fontSize: typography.md,
+              fontWeight: '300',
+            }}
+          >
             {prefix}
           </Text>
         )}
@@ -174,66 +286,37 @@ export const Input = memo(function Input({
               flex: 1,
               color: colors.text,
               fontSize: typography.md,
-              fontWeight: '500',
+              fontWeight: '400',
               padding: 0,
             },
             style as TextStyle,
           ]}
           {...rest}
         />
-        {suffix && (
-          <Text style={{ color: colors.textSecondary, marginLeft: 8, fontSize: typography.sm }}>
-            {suffix}
-          </Text>
-        )}
+        {suffix &&
+          (typeof suffix === 'string' ? (
+            <Text
+              style={{
+                color: colors.textMuted,
+                marginLeft: 8,
+                fontSize: typography.sm,
+              }}
+            >
+              {suffix}
+            </Text>
+          ) : (
+            suffix
+          ))}
       </View>
       {error && (
-        <Text style={{ color: colors.loss, fontSize: typography.xs }}>
+        <Text
+          style={{ color: colors.loss, fontSize: typography.xs, marginLeft: 4 }}
+        >
           {error}
         </Text>
       )}
     </View>
   );
-});
-
-// ============================================================
-// CARD
-// ============================================================
-
-interface CardProps {
-  children: React.ReactNode;
-  style?: ViewStyle;
-  onPress?: () => void;
-}
-
-export const Card = memo(function Card({ children, style, onPress }: CardProps) {
-  const { colors, radius, shadow } = useTheme();
-
-  const content = (
-    <View
-      style={[
-        {
-          backgroundColor: colors.surface,
-          borderRadius: radius.lg,
-          borderWidth: StyleSheet.hairlineWidth,
-          borderColor: colors.border,
-          ...shadow.sm,
-        },
-        style,
-      ]}>
-      {children}
-    </View>
-  );
-
-  if (onPress) {
-    return (
-      <TouchableOpacity onPress={onPress} activeOpacity={0.85}>
-        {content}
-      </TouchableOpacity>
-    );
-  }
-
-  return content;
 });
 
 // ============================================================
@@ -254,21 +337,25 @@ export const Badge = memo(function Badge({
   size = 'sm',
 }: BadgeProps) {
   const { colors, typography, radius } = useTheme();
-
   return (
     <View
       style={{
-        paddingHorizontal: size === 'sm' ? 6 : 10,
-        paddingVertical: size === 'sm' ? 2 : 4,
+        paddingHorizontal: size === 'sm' ? 7 : 11,
+        paddingVertical: size === 'sm' ? 2 : 5,
         borderRadius: radius.full,
-        backgroundColor: bgColor ?? colors.primaryMuted,
-      }}>
+        backgroundColor: bgColor ?? colors.surfaceElevated,
+        borderWidth: StyleSheet.hairlineWidth,
+        borderColor: colors.border,
+      }}
+    >
       <Text
         style={{
-          color: color ?? colors.primary,
+          color: color ?? colors.textSecondary,
           fontSize: size === 'sm' ? typography.xs : typography.sm,
-          fontWeight: '600',
-        }}>
+          fontWeight: '500',
+          letterSpacing: 0.2,
+        }}
+      >
         {label}
       </Text>
     </View>
@@ -276,7 +363,7 @@ export const Badge = memo(function Badge({
 });
 
 // ============================================================
-// PNL TEXT (animated color change)
+// PNL TEXT
 // ============================================================
 
 interface PnlTextProps {
@@ -295,11 +382,9 @@ export const PnlText = memo(function PnlText({
   const { colors } = useTheme();
   const isProfit = value >= 0;
   const color = isProfit ? colors.profit : colors.loss;
-
   const text = format
     ? format(value)
     : `${showSign && isProfit ? '+' : ''}${value.toFixed(2)}`;
-
   return <Text style={[{ color, fontWeight: '600' }, style]}>{text}</Text>;
 });
 
@@ -312,10 +397,7 @@ export const Divider = memo(function Divider({ style }: { style?: ViewStyle }) {
   return (
     <View
       style={[
-        {
-          height: StyleSheet.hairlineWidth,
-          backgroundColor: colors.border,
-        },
+        { height: StyleSheet.hairlineWidth, backgroundColor: colors.border },
         style,
       ]}
     />
@@ -332,11 +414,22 @@ export const LoadingOverlay = memo(function LoadingOverlay() {
     <View
       style={{
         ...StyleSheet.absoluteFillObject,
-        backgroundColor: 'rgba(0,0,0,0.4)',
+        backgroundColor: 'rgba(0,0,0,0.5)',
         alignItems: 'center',
         justifyContent: 'center',
-      }}>
-      <ActivityIndicator size="large" color={colors.primary} />
+      }}
+    >
+      <View
+        style={{
+          backgroundColor: colors.surfaceElevated,
+          borderRadius: 20,
+          padding: 20,
+          borderWidth: StyleSheet.hairlineWidth,
+          borderColor: colors.border,
+        }}
+      >
+        <ActivityIndicator size="large" color={colors.primary} />
+      </View>
     </View>
   );
 });
@@ -357,7 +450,6 @@ export const ScreenHeader = memo(function ScreenHeader({
   rightAction,
 }: ScreenHeaderProps) {
   const { colors, spacing, typography } = useTheme();
-
   return (
     <View
       style={{
@@ -365,16 +457,19 @@ export const ScreenHeader = memo(function ScreenHeader({
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingHorizontal: spacing.base,
-        paddingVertical: spacing.md,
-      }}>
+        paddingTop: spacing.lg,
+        paddingBottom: spacing.md,
+      }}
+    >
       <View>
         <Text
           style={{
             color: colors.text,
-            fontSize: typography['2xl'],
+            fontSize: typography['3xl'],
             fontWeight: '700',
-            letterSpacing: -0.5,
-          }}>
+            letterSpacing: -0.8,
+          }}
+        >
           {title}
         </Text>
         {subtitle && (
@@ -383,7 +478,9 @@ export const ScreenHeader = memo(function ScreenHeader({
               color: colors.textSecondary,
               fontSize: typography.sm,
               marginTop: 2,
-            }}>
+              letterSpacing: 0.1,
+            }}
+          >
             {subtitle}
           </Text>
         )}
