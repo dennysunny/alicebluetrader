@@ -28,7 +28,7 @@ interface GlassCardProps {
   children: React.ReactNode;
   style?: ViewStyle;
   onPress?: () => void;
-  intensity?: 'low' | 'medium' | 'high';
+  intensity?: 'lowest' | 'low' | 'medium' | 'high' | 'highest';
 }
 
 export const GlassCard = memo(function GlassCard({

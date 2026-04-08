@@ -3,8 +3,9 @@ import '../alicebluetrader/src/services/mockInterceptor';
 
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useEffect } from 'react';
-import { ImageBackground, StatusBar, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import LinearGradient from 'react-native-linear-gradient';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import { httpClient } from '../alicebluetrader/src/api/httpClient';
@@ -13,7 +14,6 @@ import { RootNavigator } from '../alicebluetrader/src/navigation/RootNavigator';
 import { priceAlertService } from '../alicebluetrader/src/services/priceAlertService';
 import { useAuthStore } from '../alicebluetrader/src/store/authStore';
 import { Logger } from '../alicebluetrader/src/utils/logger';
-import LinearGradient from 'react-native-linear-gradient';
 
 // ============================================================
 // APP BOOTSTRAP
@@ -66,7 +66,7 @@ export default function App() {
           <View style={{ flex: 1 }}>
             {/* Base gradient */}
             <LinearGradient
-              colors={['#040812', '#0A1324', '#02060F']}
+              colors={['#075519', '#941ce4', '#f01c18f4']}
               start={{ x: 0, y: 0 }}
               end={{ x: 0, y: 1 }}
               style={StyleSheet.absoluteFill}
@@ -75,9 +75,9 @@ export default function App() {
             {/* Depth gradient */}
             <LinearGradient
               colors={[
-                'rgba(10,132,255,0.08)',
+                'rgba(10, 132, 255, 0.9)',
                 'transparent',
-                'rgba(50,212,164,0.06)',
+                'rgba(212, 209, 50, 0.91)',
               ]}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
@@ -86,7 +86,7 @@ export default function App() {
 
             {/* Glow effects */}
             {/* Green glow */}
-            <View
+            {/* <View
               style={{
                 position: 'absolute',
                 top: -120,
@@ -94,12 +94,12 @@ export default function App() {
                 width: 300,
                 height: 300,
                 borderRadius: 150,
-                backgroundColor: 'rgba(50, 212, 164, 0.12)',
+                backgroundColor: 'rgba(223, 33, 106, 0.55)',
               }}
-            />
+            /> */}
 
             {/* Blue glow */}
-            <View
+            {/* <View
               style={{
                 position: 'absolute',
                 bottom: -100,
@@ -107,9 +107,9 @@ export default function App() {
                 width: 260,
                 height: 260,
                 borderRadius: 130,
-                backgroundColor: 'rgba(10, 132, 255, 0.10)',
+                backgroundColor: 'rgba(212, 10, 10, 0.86)',
               }}
-            />
+            /> */}
 
             {/* App */}
             <NavigationContainer

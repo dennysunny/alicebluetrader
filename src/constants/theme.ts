@@ -1,14 +1,14 @@
 export const Colors = {
   // Brand — softer, more Apple-like teal
-  primary: '#42b895',
-  primaryDark: '#25A882',
-  primaryLight: '#5EDEBC',
-  primaryMuted: 'rgba(50, 212, 164, 0.15)',
+  // primary: '#42b895',
+  // primaryDark: '#25A882',
+  // primaryLight: '#5EDEBC',
+  // primaryMuted: 'rgba(50, 212, 164, 0.15)',
 
-  profit: '#289443', // Apple green
-  loss: '#FF453A', // Apple red
-  warning: '#FFD60A', // Apple yellow
-  info: '#0A84FF', // Apple blue
+  // profit: '#289443', // Apple green
+  // loss: '#FF453A', // Apple red
+  // warning: '#FFD60A', // Apple yellow
+  // info: '#0A84FF', // Apple blue
 
   dark: {
     // Deep navy-black base — not pure black, more like iOS dark
@@ -40,8 +40,17 @@ export const Colors = {
     inputBorder: 'rgba(255, 255, 255, 0.12)',
     inputFocus: '#32D4A4',
 
-    primaryText: '#42b895',
     fallback: '#121820',
+
+    primary: '#42b895',
+    primaryDark: '#25A882',
+    primaryLight: '#5EDEBC',
+    primaryMuted: 'rgba(50, 212, 164, 0.15)',
+
+    profit: '#289443',
+    loss: '#FF453A',
+    warning: '#FFD60A',
+    info: '#0A84FF',
   },
 
   light: {
@@ -70,9 +79,18 @@ export const Colors = {
     inputBg: 'rgba(255, 255, 255, 0.80)',
     inputBorder: 'rgba(0, 0, 0, 0.10)',
     inputFocus: '#065940',
-    primaryText: '#033e2d',
 
     fallback: '#FFFFFF',
+
+    primary: '#027c57',
+    primaryDark: '#06b986',
+    primaryLight: '#046148',
+    primaryMuted: 'rgba(50, 212, 164, 0.15)',
+
+    profit: '#074016',
+    loss: '#b8170f',
+    warning: '#ae9205',
+    info: '#0553a1',
   },
 } as const;
 
@@ -122,9 +140,18 @@ export const Radius = {
   full: 999,
 } as const;
 
-export const getColorIntensity = (intensity: 'lowest' | 'low' | 'medium' | 'high' | 'highest', IsDark: boolean) => {
-  const opacity = { lowest: 0.10, low: 0.30, medium: 0.50, high: 0.70, highest: 0.90 }[intensity];
-  if(IsDark) {
+export const getColorIntensity = (
+  intensity: 'lowest' | 'low' | 'medium' | 'high' | 'highest',
+  IsDark: boolean,
+) => {
+  const opacity = {
+    lowest: 0.1,
+    low: 0.3,
+    medium: 0.5,
+    high: 0.7,
+    highest: 0.9,
+  }[intensity];
+  if (IsDark) {
     return `rgba(2, 2, 2, ${opacity})`;
   } else {
     return `rgba(238, 240, 245, ${opacity})`;

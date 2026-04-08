@@ -1,6 +1,12 @@
 import { useColorScheme } from 'react-native';
 import { useMemo } from 'react';
-import { Colors, Typography, Spacing, Radius, Shadow } from '../constants/theme';
+import {
+  Colors,
+  Typography,
+  Spacing,
+  Radius,
+  Shadow,
+} from '../constants/theme';
 
 // ============================================================
 // THEME HOOK
@@ -9,7 +15,7 @@ import { Colors, Typography, Spacing, Radius, Shadow } from '../constants/theme'
 type ThemeMode = 'dark' | 'light';
 
 export function useTheme() {
-const systemScheme = useColorScheme();
+  const systemScheme = useColorScheme();
   const mode: ThemeMode = systemScheme === 'light' ? 'light' : 'dark';
 
   const theme = useMemo(() => {
@@ -20,14 +26,6 @@ const systemScheme = useColorScheme();
       isDark: mode === 'dark',
       colors: {
         ...palette,
-        primary: Colors.primary,
-        primaryDark: Colors.primaryDark,
-        primaryLight: Colors.primaryLight,
-        primaryMuted: Colors.primaryMuted,
-        profit: Colors.profit,
-        loss: Colors.loss,
-        warning: Colors.warning,
-        info: Colors.info,
       },
       typography: Typography,
       spacing: Spacing,
