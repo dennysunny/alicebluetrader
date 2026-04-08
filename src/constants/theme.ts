@@ -87,6 +87,7 @@ export const Typography = {
   fontBold: 'System',
   fontMono: 'Menlo',
 
+  xxs: 9,
   xs: 11,
   sm: 13,
   base: 15,
@@ -102,6 +103,8 @@ export const Typography = {
   normal: 1.5,
   relaxed: 1.75,
 
+  400: '400',
+  500: '500',
   600: '600',
   700: '700',
 } as const;
@@ -119,6 +122,13 @@ export const Spacing = {
   '5xl': 64,
 } as const;
 
+export const LetterSpacing = {
+  tight: -0.5,
+  normal: 0,
+  normalWide: 0.2,
+  wide: 0.5,
+} as const;
+
 export const Radius = {
   xs: 6,
   sm: 10,
@@ -133,7 +143,7 @@ export const Margin = {
   xs: 2,
   sm: 4,
   md: 8,
-}
+} as const;
 
 export const Padding = {
   xs: 2,

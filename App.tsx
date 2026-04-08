@@ -3,7 +3,7 @@ import '../alicebluetrader/src/services/mockInterceptor';
 
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StatusBar, StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -60,12 +60,17 @@ function AppBootstrap() {
 // ============================================================
 
 export default function App() {
-  const { colors } = useTheme();
+  const { colors, isDark } = useTheme();
   return (
     <ErrorBoundary>
       <GestureHandlerRootView style={styles.flex}>
         <SafeAreaProvider>
           <View style={styles.flex}>
+            <StatusBar
+              barStyle={isDark ? 'light-content' : 'dark-content'}
+              translucent
+              backgroundColor="transparent"
+            />
             {/* Base gradient */}
             <LinearGradient
               colors={[

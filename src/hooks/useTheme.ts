@@ -9,6 +9,7 @@ import {
   Margin,
   Padding,
   FlexTypes,
+  LetterSpacing,
 } from '../constants/theme';
 
 // ============================================================
@@ -37,6 +38,7 @@ export function useTheme() {
       margin: Margin,
       padding: Padding,
       flexTypes: FlexTypes,
+      letterSpacing: LetterSpacing
     };
   }, [mode]);
 

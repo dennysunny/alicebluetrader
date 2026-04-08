@@ -1,8 +1,14 @@
 import { BlurView } from '@react-native-community/blur';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React from 'react';
-import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { act } from 'react';
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { useTheme } from '../hooks/useTheme';
 import { useIsAuthenticated } from '../store/authStore';
 import { useUnreadCount } from '../store/notificationStore';
@@ -34,11 +40,11 @@ function AuthNavigator() {
 }
 
 const TAB_CONFIG = [
-  { name: 'Dashboard',   icon: '⚖️', label: 'Summary'   },
-  { name: 'MarketWatch', icon: '📑', label: 'Watchlist'  },
-  { name: 'Orders',      icon: '🛒', label: 'Orders'     },
-  { name: 'Portfolio',   icon: '💼', label: 'Portfolio'  },
-  { name: 'Settings',    icon: '☰',  label: 'More'       },
+  { name: 'Dashboard', icon: '⚖️', label: 'Summary' },
+  { name: 'MarketWatch', icon: '📑', label: 'Watchlist' },
+  { name: 'Orders', icon: '🛒', label: 'Orders' },
+  { name: 'Portfolio', icon: '💼', label: 'Portfolio' },
+  { name: 'Settings', icon: '☰', label: 'More' },
 ];
 
 function CustomTabBar({
@@ -48,33 +54,18 @@ function CustomTabBar({
   state: { routes: { key: string; name: string }[]; index: number };
   navigation: { emit: Function; navigate: Function };
 }) {
-  const { colors, typography, isDark } = useTheme();
+  const { colors, typography, isDark, margin, letterSpacing } = useTheme();
   const unreadCount = useUnreadCount();
-    // Tint opacity varies by intensity
+  // Tint opacity varies by intensity
 
   return (
-    <View
-      style={{
-        position: 'absolute',
-        bottom: 24,
-        left: 20,
-        right: 20,
-        // Shadow on wrapper — must be outside overflow:hidden container
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 8 },
-        shadowOpacity: 0.30,
-        shadowRadius: 24,
-        elevation: 18,
-      }}
-    >
+    <View style={styles.parentView}>
       {/* Pill container — overflow:hidden clips BlurView to border radius */}
       <View
         style={{
-          flexDirection: 'row',
-          borderRadius: 50,
           borderWidth: StyleSheet.hairlineWidth,
           borderColor: colors.border,
-          overflow: 'hidden',
+          ...styles.pillContainer,
         }}
       >
         {/* Layer 1 — real blur */}
@@ -82,7 +73,7 @@ function CustomTabBar({
           style={StyleSheet.absoluteFill}
           blurType={isDark ? 'dark' : 'light'}
           blurAmount={Platform.OS === 'ios' ? 20 : 8} // iOS supports stronger blur, Android uses a more subtle effect
-        reducedTransparencyFallbackColor={colors.fallback}
+          reducedTransparencyFallbackColor={colors.fallback}
         />
 
         {/* Layer 2 — colour tint over blur */}
@@ -90,21 +81,13 @@ function CustomTabBar({
           style={[
             StyleSheet.absoluteFill,
             {
-            backgroundColor: getColorIntensity(BlurIntensity.Low, isDark),
+              backgroundColor: getColorIntensity(BlurIntensity.Low, isDark),
             },
           ]}
         />
 
         {/* Layer 4 — tab items above all layers */}
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            paddingVertical: 10,
-            paddingHorizontal: 8,
-            zIndex: 2,
-          }}
-        >
+        <View style={styles.tabItemAboveAll}>
           {state.routes.map((route, index) => {
             const config = TAB_CONFIG.find(t => t.name === route.name);
             const isFocused = state.index === index;
@@ -125,32 +108,23 @@ function CustomTabBar({
                 key={route.key}
                 onPress={onPress}
                 activeOpacity={0.75}
-                style={{
-                  flex: 1,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  paddingVertical: 4,
-                  gap: 3,
-                }}
+                style={styles.tabItem}
               >
                 {/* Active capsule highlight */}
                 {isFocused && (
                   <View
                     style={{
-                      position: 'absolute',
-                      width: 80,
-                      height: 60,
-                      borderRadius: 50,
+                      ...styles.activeTabItem,
                       backgroundColor: `${colors.primary}1F`,
                     }}
                   />
                 )}
 
                 {/* Icon + badge */}
-                <View style={{ position: 'relative' }}>
+                <View style={styles.relative}>
                   <Text
                     style={{
-                      fontSize: 20,
+                      fontSize: typography.lg,
                       color: isFocused ? colors.primary : colors.textMuted,
                     }}
                   >
@@ -158,21 +132,14 @@ function CustomTabBar({
                   </Text>
 
                   {route.name === 'Settings' && unreadCount > 0 && (
-                    <View
-                      style={{
-                        position: 'absolute',
-                        top: -4,
-                        right: -6,
-                        minWidth: 14,
-                        height: 14,
-                        borderRadius: 7,
-                        backgroundColor: colors.loss,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        paddingHorizontal: 2,
-                      }}
-                    >
-                      <Text style={{ color: '#fff', fontSize: 8, fontWeight: '700' }}>
+                    <View style={[styles.settings, { backgroundColor: colors.loss }]}>
+                      <Text
+                        style={{
+                          color: colors.text,
+                          fontSize: typography.xxs,
+                          fontWeight: typography['700'],
+                        }}
+                      >
                         {unreadCount > 9 ? '9+' : unreadCount}
                       </Text>
                     </View>
@@ -184,9 +151,9 @@ function CustomTabBar({
                   style={{
                     color: isFocused ? colors.primary : colors.textMuted,
                     fontSize: typography.xs,
-                    marginTop: 2,
-                    fontWeight: isFocused ? '600' : '400',
-                    letterSpacing: 0.2,
+                    marginTop: margin.xs,
+                    fontWeight: isFocused ? typography['600'] : typography['400'],
+                    letterSpacing: letterSpacing.normalWide,
                   }}
                 >
                   {config?.label}
@@ -208,11 +175,11 @@ function MainNavigator() {
       )}
       screenOptions={{ headerShown: false }}
     >
-      <MainTab.Screen name="Dashboard"   component={DashboardScreen}   />
+      <MainTab.Screen name="Dashboard" component={DashboardScreen} />
       <MainTab.Screen name="MarketWatch" component={MarketWatchScreen} />
-      <MainTab.Screen name="Orders"      component={OrdersScreen}      />
-      <MainTab.Screen name="Portfolio"   component={PortfolioScreen}   />
-      <MainTab.Screen name="Settings"    component={SettingsScreen}    />
+      <MainTab.Screen name="Orders" component={OrdersScreen} />
+      <MainTab.Screen name="Portfolio" component={PortfolioScreen} />
+      <MainTab.Screen name="Settings" component={SettingsScreen} />
     </MainTab.Navigator>
   );
 }
@@ -254,3 +221,57 @@ export function RootNavigator() {
     </RootStack.Navigator>
   );
 }
+
+const styles = StyleSheet.create({
+  parentView: {
+    position: 'absolute',
+    bottom: 24,
+    left: 20,
+    right: 20,
+    // Shadow on wrapper — must be outside overflow:hidden container
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.3,
+    shadowRadius: 24,
+    elevation: 18,
+  },
+  pillContainer: {
+    flexDirection: 'row',
+    overflow: 'hidden',
+    borderRadius: 50,
+  },
+  tabItemAboveAll: {
+    flex: 1,
+    flexDirection: 'row',
+    paddingVertical: 10,
+    paddingHorizontal: 8,
+    zIndex: 2,
+  },
+  tabItem: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 4,
+    gap: 3,
+  },
+  activeTabItem: {
+    position: 'absolute',
+    width: 80,
+    height: 60,
+    borderRadius: 50,
+  },
+  relative: {
+    position: 'relative',
+  },
+  settings: {
+    position: 'absolute',
+    top: -4,
+    right: -6,
+    minWidth: 14,
+    height: 14,
+    borderRadius: 7,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 2,
+  },
+});

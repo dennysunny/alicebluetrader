@@ -38,12 +38,24 @@ export const GlassCard = memo(function GlassCard({
   style,
   onPress,
   intensity = BlurIntensity.Lowest,
+  glow,
 }: GlassCardProps) {
   const { radius, shadow, isDark, colors } = useTheme();
   const s = styles(radius, colors, shadow, isDark);
+  let shadowColor;
+
+  if(glow) {
+    switch(glow) {
+      case GlowType.Profit: shadowColor = colors.profit;
+      break;
+      case GlowType.Loss: shadowColor = colors.loss;
+      break;
+      default: shadowColor = shadow.md.shadowColor;
+    }
+  }
 
   const content = (
-    <View style={[s.container, style]}>
+    <View style={[s.container, style, { shadowColor: shadowColor }]}>
       <BlurView
         style={s.blur}
         blurType={isDark ? 'dark' : 'light'}
