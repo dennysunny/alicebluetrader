@@ -1,7 +1,7 @@
 import { BlurView } from '@react-native-community/blur';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React, { act } from 'react';
+import React from 'react';
 import {
   Platform,
   StyleSheet,
@@ -9,10 +9,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 import { useTheme } from '../hooks/useTheme';
 import { useIsAuthenticated } from '../store/authStore';
 import { useUnreadCount } from '../store/notificationStore';
-
 import { getColorIntensity } from '../constants/theme';
 import { LoginScreen } from '../screens/Auth/LoginScreen';
 import { InstrumentDetailScreen } from '../screens/Charts/InstrumentDetailScreen';
@@ -40,11 +41,11 @@ function AuthNavigator() {
 }
 
 const TAB_CONFIG = [
-  { name: 'Dashboard', icon: '⚖️', label: 'Summary' },
-  { name: 'MarketWatch', icon: '📑', label: 'Watchlist' },
-  { name: 'Orders', icon: '🛒', label: 'Orders' },
-  { name: 'Portfolio', icon: '💼', label: 'Portfolio' },
-  { name: 'Settings', icon: '☰', label: 'More' },
+  { name: 'Dashboard', icon: 'analytics-outline', label: 'Summary' },
+  { name: 'MarketWatch', icon: 'eye-outline', label: 'Watchlist' },
+  { name: 'Orders', icon: 'receipt-outline', label: 'Orders' },
+  { name: 'Portfolio', icon: 'briefcase-outline', label: 'Portfolio' },
+  { name: 'Settings', icon: 'menu-outline', label: 'More' },
 ];
 
 function CustomTabBar({
@@ -72,7 +73,7 @@ function CustomTabBar({
         <BlurView
           style={StyleSheet.absoluteFill}
           blurType={isDark ? 'dark' : 'light'}
-          blurAmount={Platform.OS === 'ios' ? 20 : 8} // iOS supports stronger blur, Android uses a more subtle effect
+          blurAmount={Platform.OS === 'ios' ? 20 : 6} // iOS supports stronger blur, Android uses a more subtle effect
           reducedTransparencyFallbackColor={colors.fallback}
         />
 
@@ -86,7 +87,7 @@ function CustomTabBar({
           ]}
         />
 
-        {/* Layer 4 — tab items above all layers */}
+        {/* Layer 3 — tab items above all layers */}
         <View style={styles.tabItemAboveAll}>
           {state.routes.map((route, index) => {
             const config = TAB_CONFIG.find(t => t.name === route.name);
@@ -122,17 +123,23 @@ function CustomTabBar({
 
                 {/* Icon + badge */}
                 <View style={styles.relative}>
-                  <Text
-                    style={{
-                      fontSize: typography.lg,
-                      color: isFocused ? colors.primary : colors.textMuted,
-                    }}
-                  >
-                    {config?.icon}
-                  </Text>
+                  <Ionicons
+                    name={
+                      isFocused
+                        ? (config?.icon.replace('-outline', '') as any)
+                        : (config?.icon as any)
+                    }
+                    size={22}
+                    color={isFocused ? colors.primary : colors.textMuted}
+                  />
 
                   {route.name === 'Settings' && unreadCount > 0 && (
-                    <View style={[styles.settings, { backgroundColor: colors.loss }]}>
+                    <View
+                      style={[
+                        styles.settings,
+                        { backgroundColor: colors.loss },
+                      ]}
+                    >
                       <Text
                         style={{
                           color: colors.text,
@@ -149,10 +156,12 @@ function CustomTabBar({
                 {/* Label */}
                 <Text
                   style={{
-                    color: isFocused ? colors.primary : colors.textMuted,
+                    color: isFocused ? colors.primary : colors.textSecondary,
                     fontSize: typography.xs,
                     marginTop: margin.xs,
-                    fontWeight: isFocused ? typography['600'] : typography['400'],
+                    fontWeight: isFocused
+                      ? typography['600']
+                      : typography['500'],
                     letterSpacing: letterSpacing.normalWide,
                   }}
                 >
@@ -228,7 +237,6 @@ const styles = StyleSheet.create({
     bottom: 24,
     left: 20,
     right: 20,
-    // Shadow on wrapper — must be outside overflow:hidden container
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.3,
