@@ -285,3 +285,21 @@ export type TradingStackParamList = {
   OrderConfirm: { order: OrderRequest };
   OrderSuccess: { orderId: string };
 };
+
+// ============================================================
+// OTHER UTILITY TYPES
+// ============================================================
+
+export enum BlurIntensity {
+  Low = 'low',
+  Medium = 'medium',
+  High = 'high',
+  Lowest = 'lowest',
+  Highest = 'highest',
+}
+
+export enum GlowType {
+  Profit = 'profit',
+  Loss = 'loss',
+  Neutral = 'neutral',
+}

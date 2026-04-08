@@ -47,7 +47,7 @@ export function PortfolioScreen() {
   ];
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }} edges={['top']}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'transparent' }} edges={['top']}>
       <ScreenHeader title="Portfolio" />
       <View style={[styles.summaryBar, { backgroundColor: colors.surface, borderColor: colors.border }]}>
         <SummaryTile label="Total P&L" value={summary.totalPnl} subtitle={formatPercent(summary.totalPnlPercent)} isPnl />

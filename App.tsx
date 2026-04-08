@@ -14,6 +14,7 @@ import { RootNavigator } from '../alicebluetrader/src/navigation/RootNavigator';
 import { priceAlertService } from '../alicebluetrader/src/services/priceAlertService';
 import { useAuthStore } from '../alicebluetrader/src/store/authStore';
 import { Logger } from '../alicebluetrader/src/utils/logger';
+import { useTheme } from './src/hooks/useTheme';
 
 // ============================================================
 // APP BOOTSTRAP
@@ -44,11 +45,11 @@ function AppBootstrap() {
 
   // Show splash / loading while restoring session
   if (!isInitialized) {
-    return <View style={{ flex: 1, backgroundColor: 'transparent' }} />; // Replace with a proper SplashScreen
+    return <View style={[styles.flex, styles.transparentbg]} />; // Replace with a proper SplashScreen
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'transparent' }}>
+    <View style={[styles.flex, styles.transparentbg]}>
       <RootNavigator />
     </View>
   );
@@ -59,14 +60,20 @@ function AppBootstrap() {
 // ============================================================
 
 export default function App() {
+  const { colors } = useTheme();
   return (
     <ErrorBoundary>
-      <GestureHandlerRootView style={{ flex: 1 }}>
+      <GestureHandlerRootView style={styles.flex}>
         <SafeAreaProvider>
-          <View style={{ flex: 1 }}>
+          <View style={styles.flex}>
             {/* Base gradient */}
             <LinearGradient
-              colors={['#075519', '#941ce4', '#f01c18f4']}
+              colors={[
+                colors.backgroundGradientTop,
+                colors.background,
+                colors.backgroundGradientBottom,
+              ]}
+              locations={[0, 0.5, 1]}
               start={{ x: 0, y: 0 }}
               end={{ x: 0, y: 1 }}
               style={StyleSheet.absoluteFill}
@@ -74,42 +81,11 @@ export default function App() {
 
             {/* Depth gradient */}
             <LinearGradient
-              colors={[
-                'rgba(10, 132, 255, 0.9)',
-                'transparent',
-                'rgba(212, 209, 50, 0.91)',
-              ]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
+              colors={[colors.primaryMuted, 'transparent']}
+              start={{ x: 0.3, y: 0 }}
+              end={{ x: 0.8, y: 1 }}
               style={StyleSheet.absoluteFill}
             />
-
-            {/* Glow effects */}
-            {/* Green glow */}
-            {/* <View
-              style={{
-                position: 'absolute',
-                top: -120,
-                left: '20%',
-                width: 300,
-                height: 300,
-                borderRadius: 150,
-                backgroundColor: 'rgba(223, 33, 106, 0.55)',
-              }}
-            /> */}
-
-            {/* Blue glow */}
-            {/* <View
-              style={{
-                position: 'absolute',
-                bottom: -100,
-                right: '10%',
-                width: 260,
-                height: 260,
-                borderRadius: 130,
-                backgroundColor: 'rgba(212, 10, 10, 0.86)',
-              }}
-            /> */}
 
             {/* App */}
             <NavigationContainer
@@ -118,10 +94,10 @@ export default function App() {
                 colors: {
                   background: 'transparent',
                   card: 'transparent',
-                  text: '#fff',
+                  text: colors.text,
                   border: 'transparent',
                   notification: 'transparent',
-                  primary: '#fff',
+                  primary: colors.primary,
                 },
               }}
             >
@@ -134,3 +110,12 @@ export default function App() {
     </ErrorBoundary>
   );
 }
+
+const styles = StyleSheet.create({
+  flex: {
+    flex: 1,
+  },
+  transparentbg: {
+    backgroundColor: 'transparent',
+  },
+});

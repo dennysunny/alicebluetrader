@@ -19,6 +19,7 @@ import { SettingsScreen } from '../screens/Settings/SettingsScreen';
 import { OrderConfirmScreen } from '../screens/Trading/OrderConfirmScreen';
 import { OrderEntryScreen } from '../screens/Trading/OrderEntryScreen';
 import { OrderSuccessScreen } from '../screens/Trading/OrderSuccessScreen';
+import { BlurIntensity } from '../types';
 
 const RootStack = createNativeStackNavigator();
 const AuthStack = createNativeStackNavigator();
@@ -89,7 +90,7 @@ function CustomTabBar({
           style={[
             StyleSheet.absoluteFill,
             {
-            backgroundColor: getColorIntensity('low', isDark),
+            backgroundColor: getColorIntensity(BlurIntensity.Low, isDark),
             },
           ]}
         />
@@ -181,7 +182,7 @@ function CustomTabBar({
                 {/* Label */}
                 <Text
                   style={{
-                    color: isFocused ? colors.primaryText : colors.textMuted,
+                    color: isFocused ? colors.primary : colors.textMuted,
                     fontSize: typography.xs,
                     marginTop: 2,
                     fontWeight: isFocused ? '600' : '400',

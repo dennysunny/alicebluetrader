@@ -61,7 +61,7 @@ export function MarketWatchScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }} edges={['top']}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'transparent' }} edges={['top']}>
       <ScreenHeader
         title="Market Watch"
         subtitle={isConnected ? '● Live' : '○ Offline'}

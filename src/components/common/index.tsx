@@ -19,6 +19,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { getColorIntensity } from '../../constants/theme';
 import { useTheme } from '../../hooks/useTheme';
+import { BlurIntensity, GlowType } from '../../types';
 
 // ============================================================
 // GLASS CARD — the core frosted glass primitive
@@ -28,50 +29,38 @@ interface GlassCardProps {
   children: React.ReactNode;
   style?: ViewStyle;
   onPress?: () => void;
-  intensity?: 'lowest' | 'low' | 'medium' | 'high' | 'highest';
+  intensity?: BlurIntensity;
+  glow?: GlowType;
 }
 
 export const GlassCard = memo(function GlassCard({
   children,
   style,
   onPress,
-  intensity = 'lowest',
+  intensity = BlurIntensity.Lowest,
 }: GlassCardProps) {
   const { radius, shadow, isDark, colors } = useTheme();
+  const s = styles(radius, colors, shadow, isDark);
 
   const content = (
-    <View
-      style={[
-        {
-          borderRadius: radius.xl,
-          borderWidth: StyleSheet.hairlineWidth,
-          borderColor: colors.border,
-          overflow: 'hidden', // clips BlurView + tint to border radius
-          ...shadow.md,
-        },
-        style,
-      ]}
-    >
-      {/* Layer 1: Real blur — fills the card behind content */}
+    <View style={[s.container, style]}>
       <BlurView
-        style={StyleSheet.absoluteFill}
+        style={s.blur}
         blurType={isDark ? 'dark' : 'light'}
-        blurAmount={Platform.OS === 'ios' ? 20 : 10}
+        blurAmount={Platform.OS === 'ios' ? 24 : 16}
         reducedTransparencyFallbackColor={colors.fallback}
       />
 
-      {/* Layer 2: Colour tint over the blur */}
       <View
         style={[
           StyleSheet.absoluteFill,
-          {
-            backgroundColor: getColorIntensity(intensity, isDark),
-          },
+          { backgroundColor: getColorIntensity(intensity, isDark) },
         ]}
       />
 
-      {/* Layer 3: Actual content — must be relative so it sits above absolute layers */}
-      <View style={{ position: 'relative', zIndex: 2 }}>{children}</View>
+      <View style={s.borderGlow} />
+
+      <View style={s.content}>{children}</View>
     </View>
   );
 
@@ -82,6 +71,7 @@ export const GlassCard = memo(function GlassCard({
       </TouchableOpacity>
     );
   }
+
   return content;
 });
 
@@ -489,3 +479,34 @@ export const ScreenHeader = memo(function ScreenHeader({
     </View>
   );
 });
+
+const styles = (radius: any, colors: any, shadow: any, isDark: boolean) =>
+  StyleSheet.create({
+    container: {
+      borderRadius: radius.xl,
+      borderWidth: StyleSheet.hairlineWidth,
+      borderColor: colors.border,
+      overflow: 'hidden',
+      ...(isDark ? shadow.lg : shadow.md),
+    },
+    blur: {
+      ...StyleSheet.absoluteFill,
+    },
+    highlight: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      height: '45%',
+    },
+    borderGlow: {
+      ...StyleSheet.absoluteFill,
+      borderRadius: radius.xl,
+      borderWidth: 1,
+      borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.6)',
+    },
+    content: {
+      position: 'relative',
+      zIndex: 2,
+    },
+  });

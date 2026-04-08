@@ -21,13 +21,14 @@ import {
   formatPercent,
   formatDate,
 } from '../../utils/formatters';
+import { GlowType } from '../../types';
 
 // ============================================================
 // DASHBOARD SCREEN
 // ============================================================
 
 export function DashboardScreen() {
-  const { colors, spacing, typography, radius } = useTheme();
+  const { colors, spacing, typography, radius, margin } = useTheme();
   const { fetchAll, isLoading, positions, holdings } = usePortfolioStore();
   const summary = usePortfolioSummary();
   const funds = useFunds();
@@ -44,10 +45,7 @@ export function DashboardScreen() {
   const today = formatDate(Date.now());
 
   return (
-    <SafeAreaView
-      style={{ flex: 1, backgroundColor: 'transparent' }}
-      edges={['top']}
-    >
+    <SafeAreaView style={[styles.flex, styles.transparentbg]} edges={['top']}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         refreshControl={
@@ -57,7 +55,7 @@ export function DashboardScreen() {
             tintColor={colors.primary}
           />
         }
-        contentContainerStyle={{ paddingBottom: 120 }}
+        contentContainerStyle={{ ...styles.bottomPadding, gap: spacing.sm }}
       >
         {/* Header */}
         <View style={[styles.header, { paddingHorizontal: spacing.base }]}>
@@ -90,7 +88,10 @@ export function DashboardScreen() {
         <View
           style={{ paddingHorizontal: spacing.base, marginTop: spacing.md }}
         >
-          <Card style={styles.portfolioCard}>
+          <Card
+            style={styles.portfolioCard}
+            glow={summary.totalPnl >= 0 ? GlowType.Profit : GlowType.Loss}
+          >
             <View style={{ padding: spacing.base, paddingTop: spacing.lg }}>
               <Text
                 style={{ color: colors.textSecondary, fontSize: typography.sm }}
@@ -101,21 +102,12 @@ export function DashboardScreen() {
                 style={{
                   color: colors.text,
                   fontSize: typography['4xl'],
-                  fontWeight: '700',
-                  letterSpacing: -1,
-                  marginTop: 4,
+                  ...styles.portfolioValue,
                 }}
               >
                 {formatCurrency(summary.currentValue, { compact: true })}
               </Text>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  gap: 12,
-                  marginTop: 8,
-                }}
-              >
+              <View style={styles.pnlText}>
                 <PnlText
                   value={summary.totalPnl}
                   style={{ fontSize: typography.md }}
@@ -178,7 +170,7 @@ export function DashboardScreen() {
                 style={{
                   color: colors.text,
                   fontSize: typography.md,
-                  fontWeight: '600',
+                  fontWeight: typography[600],
                 }}
               >
                 Available Funds
@@ -242,7 +234,7 @@ export function DashboardScreen() {
                 .filter(p => p.netQty !== 0)
                 .slice(0, 5)
                 .map((pos, idx, arr) => (
-                  <View key={pos.token}>
+                  <View key={pos.token} style={{ marginBottom: spacing.sm }}>
                     <View
                       style={[
                         styles.positionRow,
@@ -252,11 +244,11 @@ export function DashboardScreen() {
                         },
                       ]}
                     >
-                      <View style={{ flex: 1 }}>
+                      <View style={styles.flex}>
                         <Text
                           style={{
                             color: colors.text,
-                            fontWeight: '600',
+                            fontWeight: typography[600],
                             fontSize: typography.base,
                           }}
                         >
@@ -266,17 +258,17 @@ export function DashboardScreen() {
                           style={{
                             color: colors.textSecondary,
                             fontSize: typography.xs,
-                            marginTop: 2,
+                            marginTop: margin.sm,
                           }}
                         >
                           {pos.exchange} · {pos.productType} · Qty: {pos.netQty}
                         </Text>
                       </View>
-                      <View style={{ alignItems: 'flex-end' }}>
+                      <View style={styles.alignFlexEnd}>
                         <Text
                           style={{
                             color: colors.text,
-                            fontWeight: '600',
+                            fontWeight: typography[600],
                             fontSize: typography.base,
                           }}
                         >
@@ -284,7 +276,10 @@ export function DashboardScreen() {
                         </Text>
                         <PnlText
                           value={pos.pnl}
-                          style={{ fontSize: typography.xs, marginTop: 2 }}
+                          style={{
+                            fontSize: typography.xs,
+                            marginTop: margin.sm,
+                          }}
                           format={v =>
                             `${v >= 0 ? '+' : ''}${formatCurrency(v)}`
                           }
@@ -324,11 +319,11 @@ export function DashboardScreen() {
                       },
                     ]}
                   >
-                    <View style={{ flex: 1 }}>
+                    <View style={styles.flex}>
                       <Text
                         style={{
                           color: colors.text,
-                          fontWeight: '600',
+                          fontWeight: typography[600],
                           fontSize: typography.base,
                         }}
                       >
@@ -338,18 +333,18 @@ export function DashboardScreen() {
                         style={{
                           color: colors.textSecondary,
                           fontSize: typography.xs,
-                          marginTop: 2,
+                          marginTop: margin.sm,
                         }}
                       >
                         {holding.quantity} shares · Avg{' '}
                         {formatCurrency(holding.avgPrice)}
                       </Text>
                     </View>
-                    <View style={{ alignItems: 'flex-end' }}>
+                    <View style={styles.alignFlexEnd}>
                       <Text
                         style={{
                           color: colors.text,
-                          fontWeight: '600',
+                          fontWeight: typography[600],
                           fontSize: typography.base,
                         }}
                       >
@@ -357,7 +352,10 @@ export function DashboardScreen() {
                       </Text>
                       <PnlText
                         value={holding.pnlPercent}
-                        style={{ fontSize: typography.xs, marginTop: 2 }}
+                        style={{
+                          fontSize: typography.xs,
+                          marginTop: margin.sm,
+                        }}
                         format={v => formatPercent(v)}
                       />
                     </View>
@@ -386,14 +384,14 @@ function StatItem({
   value: string;
   valueColor: string;
 }) {
-  const { colors, typography } = useTheme();
+  const { colors, typography, margin } = useTheme();
   return (
-    <View style={{ flex: 1, alignItems: 'center' }}>
+    <View style={[styles.alignFlexCenter, styles.flex]}>
       <Text
         style={{
           color: valueColor,
           fontSize: typography.base,
-          fontWeight: '700',
+          fontWeight: typography[700],
         }}
       >
         {value}
@@ -402,7 +400,7 @@ function StatItem({
         style={{
           color: colors.textMuted,
           fontSize: typography.xs,
-          marginTop: 2,
+          marginTop: margin.sm,
         }}
       >
         {label}
@@ -419,10 +417,30 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     paddingBottom: 8,
   },
+  flex: {
+    flex: 1,
+  },
+  transparentbg: {
+    backgroundColor: 'transparent',
+  },
+  bottomPadding: {
+    paddingBottom: 120,
+  },
   greeting: { fontSize: 13 },
   name: { fontSize: 22, fontWeight: '700', letterSpacing: -0.4, marginTop: 2 },
   dateBadge: { paddingHorizontal: 12, paddingVertical: 6 },
-  portfolioCard: { overflow: 'hidden'},
+  portfolioCard: { overflow: 'hidden' },
+  portfolioValue: {
+    fontWeight: '700',
+    letterSpacing: -1,
+    marginTop: 4,
+  },
+  pnlText: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    marginTop: 8,
+  },
   cardAccent: { height: 4, width: '100%' },
   statsRow: { flexDirection: 'row', alignItems: 'center' },
   statDivider: { width: StyleSheet.hairlineWidth, height: 32 },
@@ -442,6 +460,12 @@ const styles = StyleSheet.create({
   positionRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  alignFlexEnd: {
+    alignItems: 'flex-end',
+  },
+  alignFlexCenter: {
     alignItems: 'center',
   },
 });

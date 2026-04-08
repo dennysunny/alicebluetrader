@@ -6,6 +6,9 @@ import {
   Spacing,
   Radius,
   Shadow,
+  Margin,
+  Padding,
+  FlexTypes,
 } from '../constants/theme';
 
 // ============================================================
@@ -31,6 +34,9 @@ export function useTheme() {
       spacing: Spacing,
       radius: Radius,
       shadow: Shadow,
+      margin: Margin,
+      padding: Padding,
+      flexTypes: FlexTypes,
     };
   }, [mode]);
 

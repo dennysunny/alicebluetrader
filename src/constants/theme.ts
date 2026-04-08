@@ -1,96 +1,82 @@
+import { BlurIntensity } from '../types';
+
 export const Colors = {
-  // Brand — softer, more Apple-like teal
-  // primary: '#42b895',
-  // primaryDark: '#25A882',
-  // primaryLight: '#5EDEBC',
-  // primaryMuted: 'rgba(50, 212, 164, 0.15)',
-
-  // profit: '#289443', // Apple green
-  // loss: '#FF453A', // Apple red
-  // warning: '#FFD60A', // Apple yellow
-  // info: '#0A84FF', // Apple blue
-
   dark: {
-    // Deep navy-black base — not pure black, more like iOS dark
-    background: '#080C14',
-    backgroundGradientTop: '#0D1526',
-    backgroundGradientBottom: '#070A10',
+    background: '#060A12',
+    backgroundGradientTop: '#0B1424',
+    backgroundGradientBottom: '#05080F',
 
-    // Frosted glass surfaces — semi-transparent white over dark
-    surface: 'rgba(255, 255, 255, 0.06)',
-    surfaceElevated: 'rgba(255, 255, 255, 0.10)',
-    surfaceHighlight: 'rgba(255, 255, 255, 0.14)',
-    surfaceStrong: 'rgba(255, 255, 255, 0.18)',
+    surface: 'rgba(255,255,255,0.03)',
+    surfaceElevated: 'rgba(255,255,255,0.06)',
+    surfaceHighlight: 'rgba(255, 255, 255, 0.12)',
+    surfaceStrong: 'rgba(255, 255, 255, 0.16)',
 
-    // Borders — very subtle white lines like iOS
-    border: 'rgba(255, 255, 255, 0.10)',
-    borderFaint: 'rgba(255, 255, 255, 0.05)',
-    borderStrong: 'rgba(255, 255, 255, 0.18)',
+    border: 'rgba(255, 255, 255, 0.08)',
+    borderFaint: 'rgba(255, 255, 255, 0.04)',
+    borderStrong: 'rgba(255, 255, 255, 0.16)',
 
-    // Typography — pure whites with varying opacity
-    text: 'rgba(255, 255, 255, 0.95)',
-    textSecondary: 'rgba(255, 255, 255, 0.55)',
-    textMuted: 'rgb(81, 83, 79)',
-    textInverse: '#080C14',
+    text: 'rgba(255, 255, 255, 0.96)',
+    textSecondary: 'rgba(255, 255, 255, 0.6)',
+    textMuted: 'rgba(255, 255, 255, 0.35)',
+    textInverse: '#060A12',
 
-    tabBar: 'rgba(10, 14, 22, 1)',
-    header: 'rgba(8, 12, 20, 0.92)',
+    tabBar: 'rgba(8, 12, 20, 0.95)',
+    header: 'rgba(6, 10, 18, 0.9)',
 
-    inputBg: 'rgba(255, 255, 255, 0.07)',
-    inputBorder: 'rgba(255, 255, 255, 0.12)',
-    inputFocus: '#32D4A4',
+    inputBg: 'rgba(255, 255, 255, 0.06)',
+    inputBorder: 'rgba(255, 255, 255, 0.1)',
+    inputFocus: '#3EE6B0',
 
-    fallback: '#121820',
+    fallback: '#0E1623',
 
-    primary: '#42b895',
-    primaryDark: '#25A882',
-    primaryLight: '#5EDEBC',
-    primaryMuted: 'rgba(50, 212, 164, 0.15)',
+    primary: '#3EE6B0',
+    primaryDark: '#1FCF95',
+    primaryLight: '#7EF0CC',
+    primaryMuted: 'rgba(62, 230, 176, 0.12)',
 
-    profit: '#289443',
-    loss: '#FF453A',
-    warning: '#FFD60A',
-    info: '#0A84FF',
+    profit: '#22C55E',
+    loss: '#FF5C5C',
+    warning: '#FFD166',
+    info: '#3B82F6',
   },
 
   light: {
-    background: '#F2F4F8',
-    backgroundGradientTop: 'rgb(238, 241, 247)',
-    backgroundGradientBottom: '#F6F8FB',
+    background: '#F7F9FC',
+    backgroundGradientTop: '#FFFFFF',
+    backgroundGradientBottom: '#EEF2F7',
 
-    // Frosted glass — semi-transparent white, iOS vibrancy style
-    surface: 'rgba(255, 255, 255, 0.72)',
-    surfaceElevated: 'rgba(255, 255, 255, 0.88)',
+    surface: 'rgba(255,255,255,0.5)',
+    surfaceElevated: 'rgba(255,255,255,0.7)',
     surfaceHighlight: 'rgba(255, 255, 255, 0.95)',
     surfaceStrong: '#FFFFFF',
 
-    border: 'rgba(0, 0, 0, 0.07)',
-    borderFaint: 'rgba(0, 0, 0, 0.04)',
-    borderStrong: 'rgba(0, 0, 0, 0.14)',
+    border: 'rgba(0, 0, 0, 0.06)',
+    borderFaint: 'rgba(0, 0, 0, 0.03)',
+    borderStrong: 'rgba(0, 0, 0, 0.12)',
 
-    text: 'rgba(0, 0, 0, 0.90)',
-    textSecondary: 'rgba(0, 0, 0, 0.50)',
-    textMuted: 'rgba(0, 0, 0, 0.30)',
+    text: 'rgba(15, 23, 42, 0.95)',
+    textSecondary: 'rgba(15, 23, 42, 0.55)',
+    textMuted: 'rgba(15, 23, 42, 0.35)',
     textInverse: '#FFFFFF',
 
-    tabBar: 'rgba(255, 255, 255, 1)',
-    header: 'rgba(242, 244, 248, 0.92)',
+    tabBar: 'rgba(255, 255, 255, 0.95)',
+    header: 'rgba(247, 249, 252, 0.9)',
 
-    inputBg: 'rgba(255, 255, 255, 0.80)',
-    inputBorder: 'rgba(0, 0, 0, 0.10)',
-    inputFocus: '#065940',
+    inputBg: 'rgba(255, 255, 255, 0.9)',
+    inputBorder: 'rgba(0, 0, 0, 0.08)',
+    inputFocus: '#10B981',
 
     fallback: '#FFFFFF',
 
-    primary: '#027c57',
-    primaryDark: '#06b986',
-    primaryLight: '#046148',
-    primaryMuted: 'rgba(50, 212, 164, 0.15)',
+    primary: '#10B981',
+    primaryDark: '#059669',
+    primaryLight: '#6EE7B7',
+    primaryMuted: 'rgba(16, 185, 129, 0.12)',
 
-    profit: '#074016',
-    loss: '#b8170f',
-    warning: '#ae9205',
-    info: '#0553a1',
+    profit: '#16A34A',
+    loss: '#DC2626',
+    warning: '#F59E0B',
+    info: '#2563EB',
   },
 } as const;
 
@@ -115,6 +101,9 @@ export const Typography = {
   tight: 1.2,
   normal: 1.5,
   relaxed: 1.75,
+
+  600: '600',
+  700: '700',
 } as const;
 
 export const Spacing = {
@@ -140,16 +129,36 @@ export const Radius = {
   full: 999,
 } as const;
 
+export const Margin = {
+  xs: 2,
+  sm: 4,
+  md: 8,
+}
+
+export const Padding = {
+  xs: 2,
+  sm: 4,
+  md: 8,
+}
+
+export const FlexTypes = {
+  row: 'row',
+  column: 'column',
+  center: 'center',
+  spaceBetween: 'space-between',
+  flexEnd: 'flex-end',
+}
+
 export const getColorIntensity = (
-  intensity: 'lowest' | 'low' | 'medium' | 'high' | 'highest',
+  intensity: BlurIntensity,
   IsDark: boolean,
 ) => {
   const opacity = {
-    lowest: 0.1,
-    low: 0.3,
-    medium: 0.5,
-    high: 0.7,
-    highest: 0.9,
+    [BlurIntensity.Lowest]: 0.1,
+    [BlurIntensity.Low]: 0.3,
+    [BlurIntensity.Medium]: 0.5,
+    [BlurIntensity.High]: 0.7,
+    [BlurIntensity.Highest]: 0.9,
   }[intensity];
   if (IsDark) {
     return `rgba(2, 2, 2, ${opacity})`;

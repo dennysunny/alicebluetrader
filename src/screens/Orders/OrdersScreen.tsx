@@ -37,7 +37,7 @@ export function OrdersScreen() {
 
   return (
     <SafeAreaView
-      style={{ flex: 1, backgroundColor: colors.background }}
+      style={{ flex: 1, backgroundColor: 'transparent' }}
       edges={['top']}
     >
       <ScreenHeader
