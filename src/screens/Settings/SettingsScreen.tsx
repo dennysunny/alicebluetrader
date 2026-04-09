@@ -20,7 +20,7 @@ import { Logger } from '../../utils/logger';
 // ============================================================
 
 export function SettingsScreen() {
-  const { colors, spacing } = useTheme();
+  const { colors, spacing, typography, margin, padding } = useTheme();
   const { logout, isLoading } = useAuthStore();
   const profile = useUserProfile();
 
@@ -40,13 +40,11 @@ export function SettingsScreen() {
   };
 
   return (
-    <SafeAreaView
-      style={{ flex: 1, backgroundColor: colors.background }}
-      edges={['top']}>
+    <SafeAreaView style={[styles.flex, styles.transparentbg]} edges={['top']}>
       <ScreenHeader title="Settings" />
 
       <ScrollView
-        contentContainerStyle={{ padding: spacing.base, gap: spacing.base, paddingBottom: 130 }}
+        contentContainerStyle={{ padding: spacing.base, gap: spacing.base, ...styles.bottomPadding }}
         showsVerticalScrollIndicator={false}>
 
         {/* Profile Card */}
@@ -57,18 +55,18 @@ export function SettingsScreen() {
                 styles.avatar,
                 { backgroundColor: colors.primaryMuted },
               ]}>
-              <Text style={{ color: colors.primary, fontSize: 22, fontWeight: '700' }}>
+              <Text style={{ color: colors.primary, fontSize: typography.xl, fontWeight: typography['700'] }}>
                 {profile?.name?.charAt(0) ?? 'U'}
               </Text>
             </View>
-            <View style={{ flex: 1, marginLeft: 12 }}>
-              <Text style={{ color: colors.text, fontSize: 17, fontWeight: '700' }}>
+            <View style={{ marginLeft: margin.xl, ...styles.flex }}>
+              <Text style={{ color: colors.text, fontSize: typography.md, fontWeight: typography['700'] }}>
                 {profile?.name ?? '—'}
               </Text>
-              <Text style={{ color: colors.textSecondary, fontSize: 13, marginTop: 2 }}>
+              <Text style={{ color: colors.textSecondary, fontSize: typography.base, marginTop: margin.xs }}>
                 {profile?.userId ?? '—'}
               </Text>
-              <Text style={{ color: colors.textMuted, fontSize: 12, marginTop: 1 }}>
+              <Text style={{ color: colors.textMuted, fontSize: typography.sm, marginTop: margin.xxs }}>
                 {profile?.email ?? '—'}
               </Text>
             </View>
@@ -76,18 +74,18 @@ export function SettingsScreen() {
 
           {profile && (
             <>
-              <Divider style={{ marginVertical: 12 }} />
-              <View style={{ flexDirection: 'row', gap: 8, flexWrap: 'wrap' }}>
+              <Divider style={{ marginVertical: margin.lg }} />
+              <View style={{ flexDirection: 'row', gap: margin.md, flexWrap: 'wrap' }}>
                 {profile.exchanges.map((ex) => (
                   <View
                     key={ex}
                     style={{
-                      paddingHorizontal: 8,
-                      paddingVertical: 4,
+                      paddingHorizontal: padding.md,
+                      paddingVertical: padding.sm,
                       borderRadius: 6,
                       backgroundColor: colors.surfaceElevated,
                     }}>
-                    <Text style={{ color: colors.textSecondary, fontSize: 11, fontWeight: '600' }}>
+                    <Text style={{ color: colors.textSecondary, fontSize: typography.xs, fontWeight: typography['600'] }}>
                       {ex}
                     </Text>
                   </View>
@@ -161,7 +159,7 @@ export function SettingsScreen() {
               borderRadius: 12,
             },
           ]}>
-          <Text style={{ color: colors.loss, fontSize: 15, fontWeight: '600' }}>
+          <Text style={{ color: colors.loss, fontSize: typography.base, fontWeight: typography['600'] }}>
             {isLoading ? 'Signing out...' : 'Sign Out'}
           </Text>
         </TouchableOpacity>
@@ -189,7 +187,7 @@ function SettingsSection({
         style={{
           color: colors.textMuted,
           fontSize: typography.xs,
-          fontWeight: '600',
+          fontWeight: typography['600'],
           textTransform: 'uppercase',
           letterSpacing: 0.8,
           marginBottom: 8,
@@ -227,7 +225,7 @@ const SettingsRow = memo(function SettingsRow({
         style={{
           color: colors.text,
           fontSize: typography.base,
-          fontWeight: '500',
+          fontWeight: typography['500'],
           maxWidth: '55%',
           textAlign: 'right',
         }}>
@@ -255,7 +253,7 @@ const SettingsNavRow = memo(function SettingsNavRow({
       <Text style={{ color: colors.text, fontSize: typography.base }}>
         {label}
       </Text>
-      <Text style={{ color: colors.textMuted, fontSize: 18 }}>›</Text>
+      <Text style={{ color: colors.textMuted, fontSize: typography.lg }}>›</Text>
     </TouchableOpacity>
   );
 });
@@ -271,19 +269,19 @@ const SettingsSwitchRow = memo(function SettingsSwitchRow({
   value: boolean;
   onChange: (v: boolean) => void;
 }) {
-  const { colors, spacing, typography } = useTheme();
+  const { colors, spacing, typography, margin } = useTheme();
   return (
     <View
       style={[
         styles.settingsRow,
         { paddingHorizontal: spacing.base, paddingVertical: spacing.md },
       ]}>
-      <View style={{ flex: 1 }}>
+      <View style={styles.flex}>
         <Text style={{ color: colors.text, fontSize: typography.base }}>
           {label}
         </Text>
         {subtitle && (
-          <Text style={{ color: colors.textMuted, fontSize: typography.xs, marginTop: 2 }}>
+          <Text style={{ color: colors.textMuted, fontSize: typography.xs, marginTop: margin.xs }}>
             {subtitle}
           </Text>
         )}
@@ -314,6 +312,15 @@ function maskMobile(mobile: string): string {
 
 const styles = StyleSheet.create({
   profileRow: { flexDirection: 'row', alignItems: 'center' },
+  flex: {
+    flex: 1,
+  },
+  transparentbg: {
+    backgroundColor: 'transparent',
+  },
+  bottomPadding: {
+    paddingBottom: 120,
+  },
   avatar: {
     width: 52,
     height: 52,

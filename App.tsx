@@ -87,8 +87,8 @@ export default function App() {
             {/* Depth gradient */}
             <LinearGradient
               colors={[colors.primaryMuted, 'transparent']}
-              start={{ x: 0.3, y: 0 }}
-              end={{ x: 0.8, y: 1 }}
+              start={{ x: 0.8, y: 0.3 }}
+              end={{ x: 0.1, y: 0.8 }}
               style={StyleSheet.absoluteFill}
             />
 

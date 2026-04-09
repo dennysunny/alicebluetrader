@@ -9,7 +9,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { useTheme } from '../hooks/useTheme';
 import { useIsAuthenticated } from '../store/authStore';
@@ -41,11 +40,11 @@ function AuthNavigator() {
 }
 
 const TAB_CONFIG = [
-  { name: 'Dashboard', icon: 'analytics-outline', label: 'Summary' },
-  { name: 'MarketWatch', icon: 'eye-outline', label: 'Watchlist' },
-  { name: 'Orders', icon: 'receipt-outline', label: 'Orders' },
-  { name: 'Portfolio', icon: 'briefcase-outline', label: 'Portfolio' },
-  { name: 'Settings', icon: 'menu-outline', label: 'More' },
+  { name: 'Dashboard',   icon: '⊞',  label: 'Summary'   },
+  { name: 'MarketWatch', icon: '☆',  label: 'Watchlist' },
+  { name: 'Orders',      icon: '⦿',  label: 'Orders'    },
+  { name: 'Portfolio',   icon: '▤',  label: 'Portfolio' },
+  { name: 'Settings',    icon: '☰',  label: 'More'      },
 ];
 
 function CustomTabBar({
@@ -55,7 +54,7 @@ function CustomTabBar({
   state: { routes: { key: string; name: string }[]; index: number };
   navigation: { emit: Function; navigate: Function };
 }) {
-  const { colors, typography, isDark, margin, letterSpacing } = useTheme();
+  const { colors, typography, isDark, shadow, margin, letterSpacing } = useTheme();
   const unreadCount = useUnreadCount();
   // Tint opacity varies by intensity
 
@@ -67,6 +66,7 @@ function CustomTabBar({
           borderWidth: StyleSheet.hairlineWidth,
           borderColor: colors.border,
           ...styles.pillContainer,
+          ...shadow.md
         }}
       >
         {/* Layer 1 — real blur */}
@@ -123,7 +123,7 @@ function CustomTabBar({
 
                 {/* Icon + badge */}
                 <View style={styles.relative}>
-                  <Ionicons
+                  {/* <Ionicons
                     name={
                       isFocused
                         ? (config?.icon.replace('-outline', '') as any)
@@ -131,7 +131,8 @@ function CustomTabBar({
                     }
                     size={22}
                     color={isFocused ? colors.primary : colors.textMuted}
-                  />
+                  /> */}
+                  <Text style={{ fontSize: typography.xl, color: isFocused ? colors.primary : colors.textMuted }}>{config?.icon}</Text>
 
                   {route.name === 'Settings' && unreadCount > 0 && (
                     <View

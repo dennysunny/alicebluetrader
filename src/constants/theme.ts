@@ -2,9 +2,9 @@ import { BlurIntensity } from '../types';
 
 export const Colors = {
   dark: {
-    background: '#060A12',
-    backgroundGradientTop: '#0B1424',
-    backgroundGradientBottom: '#05080F',
+    background: '#021912',
+    backgroundGradientTop: '#27023b',
+    backgroundGradientBottom: '#03012f',
 
     surface: 'rgba(255,255,255,0.03)',
     surfaceElevated: 'rgba(255,255,255,0.06)',
@@ -32,7 +32,7 @@ export const Colors = {
     primary: '#3EE6B0',
     primaryDark: '#1FCF95',
     primaryLight: '#7EF0CC',
-    primaryMuted: 'rgba(62, 230, 176, 0.12)',
+    primaryMuted: 'rgba(14, 1, 48, 0.42)',
 
     profit: '#22C55E',
     loss: '#FF5C5C',
@@ -41,9 +41,9 @@ export const Colors = {
   },
 
   light: {
-    background: '#F7F9FC',
-    backgroundGradientTop: '#FFFFFF',
-    backgroundGradientBottom: '#EEF2F7',
+    background: '#b0fbe3',
+    backgroundGradientTop: '#cd9ce8',
+    backgroundGradientBottom: '#9da3ec',
 
     surface: 'rgba(255,255,255,0.5)',
     surfaceElevated: 'rgba(255,255,255,0.7)',
@@ -140,16 +140,25 @@ export const Radius = {
 } as const;
 
 export const Margin = {
+  xxs: 1,
   xs: 2,
   sm: 4,
   md: 8,
+  base: 10,
+  lg: 12,
+  xl: 16,
+  '2xl': 24,
 } as const;
 
 export const Padding = {
   xs: 2,
   sm: 4,
   md: 8,
-}
+  base: 10,
+  lg: 12,
+  xl: 16,
+  '2xl': 24,
+};
 
 export const FlexTypes = {
   row: 'row',
@@ -157,7 +166,7 @@ export const FlexTypes = {
   center: 'center',
   spaceBetween: 'space-between',
   flexEnd: 'flex-end',
-}
+};
 
 export const getColorIntensity = (
   intensity: BlurIntensity,
