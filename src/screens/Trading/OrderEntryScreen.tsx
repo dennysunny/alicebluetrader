@@ -215,7 +215,9 @@ export function OrderEntryScreen() {
         {/* Header */}
         <View style={[styles.header, { borderBottomColor: colors.border }]}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Text style={{ color: colors.primaryDark, fontSize: typography.xl }}>
+            <Text
+              style={{ color: colors.primaryDark, fontSize: typography.xl }}
+            >
               ✕
             </Text>
           </TouchableOpacity>
@@ -275,33 +277,23 @@ export function OrderEntryScreen() {
               ]}
             >
               {(['BUY', 'SELL'] as TransactionType[]).map(s => (
-                <TouchableOpacity
+                <Button
                   key={s}
+                  label={s}
                   onPress={() => setSide(s)}
-                  style={[
-                    styles.sideBtn,
-                    // eslint-disable-next-line react-native/no-inline-styles
-                    {
-                      borderRadius: radius.full,
-                      backgroundColor:
-                        side === s
-                          ? s === 'BUY'
-                            ? colors.profit
-                            : colors.loss
-                          : 'transparent',
-                    },
-                  ]}
-                >
-                  <Text
-                    style={{
-                      color: side === s ? colors.text : colors.textSecondary,
-                      fontWeight: typography['700'],
-                      fontSize: typography.md,
-                    }}
-                  >
-                    {s}
-                  </Text>
-                </TouchableOpacity>
+                  fullWidth={false}
+                  halfWidth={true}
+                  variant={s === side ? s === 'BUY' ? 'primary' : 'danger' : 'noborder'}
+                  // eslint-disable-next-line react-native/no-inline-styles
+                  style={{
+                    backgroundColor:
+                      side === s
+                        ? s === 'BUY'
+                          ? colors.profit
+                          : colors.loss
+                        : 'transparent',
+                  }}
+                />
               ))}
             </View>
           </Card>
@@ -444,6 +436,7 @@ export function OrderEntryScreen() {
                 onPress={handlePlaceOrder}
                 loading={isPlacing}
                 disabled={isPlacing}
+                variant={isBuy ? 'primary' : 'danger'}
                 fullWidth
                 style={{
                   backgroundColor: isBuy ? colors.profit : colors.loss,
@@ -457,7 +450,6 @@ export function OrderEntryScreen() {
   );
 }
 
-
 /**
  * Method to render a selectable chip component used for options like order type, product type, and validity.
  * It takes in a label to display, a boolean indicating if it is currently selected, and an onPress handler to update the selected state.
@@ -465,7 +457,7 @@ export function OrderEntryScreen() {
  * This reusable component helps maintain consistency across different option selections in the order entry screen.
  * It uses the theme colors and typography for styling, and applies appropriate padding and border radius to match the overall design of the app.
  * The onPress handler allows it to be interactive, enabling users to easily switch between different options by tapping on the chips.
- * @param param0 - An object containing the label to display on the chip, a boolean indicating if the chip is currently selected, and an onPress function to handle when the chip is tapped. 
+ * @param param0 - An object containing the label to display on the chip, a boolean indicating if the chip is currently selected, and an onPress function to handle when the chip is tapped.
  * @returns - A styled TouchableOpacity component that visually represents a selectable chip, which can be used for selecting order type, product type, or validity in the order entry screen.
  */
 function Chip({
@@ -504,12 +496,12 @@ function Chip({
 }
 
 /**
- * Method to render a summary row in the order summary card, displaying a label and its corresponding value. 
+ * Method to render a summary row in the order summary card, displaying a label and its corresponding value.
  * It takes in a label string and a value string as props, and styles them according to the theme.
- * The label is displayed in a secondary text color, while the value is displayed in the primary text color with a slightly larger font size and bold weight for emphasis. 
+ * The label is displayed in a secondary text color, while the value is displayed in the primary text color with a slightly larger font size and bold weight for emphasis.
  * This component is used to show key information such as estimated order value, available margin, and
  * post-order balance in a clear and organized manner within the order summary section of the order entry screen.
- * @param param0 - An object containing a label string that describes the summary item (e.g. "Estimated Value") and 
+ * @param param0 - An object containing a label string that describes the summary item (e.g. "Estimated Value") and
  * a value string that shows the corresponding value (e.g. "₹10,000").
  * @returns - A styled View component that displays the label and value in a row, with appropriate spacing and colors based on the app's theme.
  * This component is used within the order summary card to present important information about the order being placed.

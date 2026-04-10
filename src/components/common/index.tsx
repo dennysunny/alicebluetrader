@@ -101,7 +101,7 @@ export const Card = GlassCard;
 interface ButtonProps {
   label: string;
   onPress: () => void;
-  variant?: 'primary' | 'secondary' | 'danger' | 'ghost';
+  variant?: 'primary' | 'secondary' | 'danger' | 'ghost' | 'noborder';
   size?: 'sm' | 'md' | 'lg';
   loading?: boolean;
   disabled?: boolean;
@@ -149,6 +149,10 @@ export const Button = memo(function Button({
       text: colors.primary,
       border: `${colors.primary}50`,
     },
+    noborder: {
+      bg: 'transparent',
+      text: colors.primary
+    }
   };
 
   const c = config[variant];

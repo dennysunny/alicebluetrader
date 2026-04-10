@@ -46,7 +46,7 @@ type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
  * - Add/remove from watchlist button
  */
 export function InstrumentDetailScreen() {
-  const { colors, spacing, typography, radius, margin, padding, shadow } = useTheme();
+  const { colors, spacing, typography, radius, margin, padding } = useTheme();
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<InstrumentDetailRoute>();
   const { instrument } = route.params;
