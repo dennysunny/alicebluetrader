@@ -16,6 +16,7 @@ export const Colors = {
     borderStrong: 'rgba(255, 255, 255, 0.16)',
 
     text: 'rgba(255, 255, 255, 0.96)',
+    textPrimary: '#07d08d',
     textSecondary: 'rgba(255, 255, 255, 0.6)',
     textMuted: 'rgba(255, 255, 255, 0.35)',
     textInverse: '#060A12',
@@ -33,6 +34,10 @@ export const Colors = {
     primaryDark: '#1FCF95',
     primaryLight: '#7EF0CC',
     primaryMuted: 'rgba(14, 1, 48, 0.42)',
+
+    primaryButtonGradient: ['#27eaac', '#1fcfc9'],
+    secondaryButtonGradient: ['#ffffff14', '#ffffff08'],
+    dangerButtonGradient: ['#FF6B6B', '#DC2626'],
 
     profit: '#22C55E',
     loss: '#FF5C5C',
@@ -55,6 +60,7 @@ export const Colors = {
     borderStrong: 'rgba(0, 0, 0, 0.12)',
 
     text: 'rgba(15, 23, 42, 0.95)',
+    textPrimary: '#049867',
     textSecondary: 'rgba(15, 23, 42, 0.55)',
     textMuted: 'rgba(15, 23, 42, 0.35)',
     textInverse: '#FFFFFF',
@@ -72,6 +78,10 @@ export const Colors = {
     primaryDark: '#059669',
     primaryLight: '#6EE7B7',
     primaryMuted: 'rgba(16, 185, 129, 0.12)',
+
+    primaryButtonGradient: ['#08aace', '#08b032'],
+    secondaryButtonGradient: ['#ffffffe6', '#ffffffb3'],
+    dangerButtonGradient: ['#FF6B6B', '#DC2626'],
 
     profit: '#16A34A',
     loss: '#DC2626',
@@ -130,7 +140,9 @@ export const LetterSpacing = {
 } as const;
 
 export const Radius = {
+  xxs: 4,
   xs: 6,
+  base: 8,
   sm: 10,
   md: 14,
   lg: 18,

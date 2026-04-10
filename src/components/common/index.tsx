@@ -20,6 +20,7 @@ import Animated, {
 import { getColorIntensity } from '../../constants/theme';
 import { useTheme } from '../../hooks/useTheme';
 import { BlurIntensity, GlowType } from '../../types';
+import LinearGradient from 'react-native-linear-gradient';
 
 // ============================================================
 // GLASS CARD — the core frosted glass primitive
@@ -37,20 +38,23 @@ export const GlassCard = memo(function GlassCard({
   children,
   style,
   onPress,
-  intensity = BlurIntensity.Lowest,
+  intensity = BlurIntensity.Low,
   glow,
 }: GlassCardProps) {
   const { radius, shadow, isDark, colors } = useTheme();
   const s = styles(radius, colors, shadow, isDark);
   let shadowColor;
 
-  if(glow) {
-    switch(glow) {
-      case GlowType.Profit: shadowColor = colors.profit;
-      break;
-      case GlowType.Loss: shadowColor = colors.loss;
-      break;
-      default: shadowColor = shadow.md.shadowColor;
+  if (glow) {
+    switch (glow) {
+      case GlowType.Profit:
+        shadowColor = colors.profit;
+        break;
+      case GlowType.Loss:
+        shadowColor = colors.loss;
+        break;
+      default:
+        shadowColor = shadow.md.shadowColor;
     }
   }
 
@@ -59,7 +63,7 @@ export const GlassCard = memo(function GlassCard({
       <BlurView
         style={s.blur}
         blurType={isDark ? 'dark' : 'light'}
-        blurAmount={Platform.OS === 'ios' ? 24 : 16}
+        blurAmount={Platform.OS === 'ios' ? 24 : 4}
         reducedTransparencyFallbackColor={colors.fallback}
       />
 
@@ -171,8 +175,9 @@ export const Button = memo(function Button({
         style={[
           {
             height,
-            backgroundColor: c.bg,
-            borderRadius: radius.lg,
+            backgroundColor: 'transparent',
+            overflow: 'hidden',
+            borderRadius: radius.full,
             alignItems: 'center',
             justifyContent: 'center',
             paddingHorizontal: 24,
@@ -184,21 +189,22 @@ export const Button = memo(function Button({
           style,
         ]}
       >
+        <LinearGradient
+          colors={
+            variant === 'primary'
+              ? [...colors.primaryButtonGradient]
+              : variant === 'secondary'
+              ? [...colors.secondaryButtonGradient]
+              : variant === 'danger'
+              ? [...colors.dangerButtonGradient]
+              : ['transparent', 'transparent']
+          }
+          start={{ x: 1, y: 0.5 }}
+          end={{ x: 0, y: 0.3 }}
+          style={StyleSheet.absoluteFill}
+        />
+
         {/* Top shimmer on primary */}
-        {variant === 'primary' && !loading && (
-          <View
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: '15%',
-              right: '15%',
-              height: '50%',
-              backgroundColor: 'rgba(255,255,255,0.18)',
-              borderBottomLeftRadius: 999,
-              borderBottomRightRadius: 999,
-            }}
-          />
-        )}
         {loading ? (
           <ActivityIndicator
             size="small"

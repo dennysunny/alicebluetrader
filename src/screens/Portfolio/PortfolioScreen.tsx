@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { FlashList } from '@shopify/flash-list';
 import { usePortfolioStore, usePositions, useHoldings, useFunds, usePortfolioSummary } from '../../store/portfolioStore';
 import { useTheme } from '../../hooks/useTheme';
-import { ScreenHeader, PnlText, Divider } from '../../components/common';
+import { ScreenHeader, PnlText, Divider, Card } from '../../components/common';
 import { PnlChart, AllocationChart, type PnlDataPoint } from '../../components/trading/PnlChart';
 import { formatCurrency, formatPercent } from '../../utils/formatters';
 import type { Position, Holding } from '../../types';
@@ -25,7 +25,7 @@ function generatePnlHistory(currentPnl: number, days = 30): PnlDataPoint[] {
 }
 
 export function PortfolioScreen() {
-  const { colors, spacing, typography } = useTheme();
+  const { colors, spacing, typography, margin } = useTheme();
   const { fetchAll, isLoading, squareOffPosition } = usePortfolioStore();
   const positions = usePositions();
   const holdings = useHoldings();
@@ -49,24 +49,26 @@ export function PortfolioScreen() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'transparent' }} edges={['top']}>
       <ScreenHeader title="Portfolio" />
-      <View style={[styles.summaryBar, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+      <Card style={{marginLeft: margin.xl, marginRight: margin.xl}}>
+        <View style={[styles.summaryBar]}>
         <SummaryTile label="Total P&L" value={summary.totalPnl} subtitle={formatPercent(summary.totalPnlPercent)} isPnl />
         <View style={[styles.dividerV, { backgroundColor: colors.border }]} />
         <SummaryTile label="Day's P&L" value={summary.dayPnl} subtitle="today" isPnl />
         <View style={[styles.dividerV, { backgroundColor: colors.border }]} />
         <SummaryTile label="Invested" value={summary.totalInvestment} subtitle={`${summary.holdingsCount} stocks`} isPnl={false} />
       </View>
+      </Card>
       <View style={[styles.tabsContainer, { marginHorizontal: spacing.base, borderColor: colors.border }]}>
         {TABS.map((tab) => (
           <TouchableOpacity key={tab.key} onPress={() => setActiveTab(tab.key)} style={[styles.tab, activeTab === tab.key && { borderBottomColor: colors.primary, borderBottomWidth: 2 }]}>
-            <Text style={{ color: activeTab === tab.key ? colors.primary : colors.textSecondary, fontWeight: activeTab === tab.key ? '600' : '400', fontSize: 13 }}>{tab.label}</Text>
+            <Text style={{ color: activeTab === tab.key ? colors.textPrimary : colors.textSecondary, fontWeight: activeTab === tab.key ? typography['700'] : typography['500'], fontSize: typography.base }}>{tab.label}</Text>
           </TouchableOpacity>
         ))}
       </View>
       {activeTab === 'overview' ? (
         <ScrollView refreshControl={<RefreshControl refreshing={isLoading} onRefresh={fetchAll} tintColor={colors.primary} />} contentContainerStyle={{ padding: spacing.base, gap: spacing.base, paddingBottom: 120 }} showsVerticalScrollIndicator={false}>
           {funds && (
-            <View style={[styles.fundsCard, { backgroundColor: colors.surface, borderRadius: 12, borderColor: colors.border }]}>
+            <Card style={styles.fundsCard}>
               <Text style={{ color: colors.text, fontSize: typography.md, fontWeight: '600', marginBottom: 12 }}>Available Funds</Text>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <FundsItem label="Available" value={formatCurrency(funds.availableBalance, { compact: true })} color={colors.profit} />
@@ -82,10 +84,10 @@ export function PortfolioScreen() {
                   <View style={{ height: '100%', width: `${funds.totalMargin > 0 ? (funds.usedMargin / funds.totalMargin) * 100 : 0}%`, backgroundColor: funds.usedMargin / funds.totalMargin > 0.8 ? colors.loss : colors.primary, borderRadius: 3 }} />
                 </View>
               </View>
-            </View>
+            </Card>
           )}
-          <PnlChart data={pnlHistory} title="30-Day P&L Trend" />
-          {allocationSlices.length > 0 && <AllocationChart slices={allocationSlices} total={allocationTotal} />}
+          <Card><PnlChart data={pnlHistory} title="30-Day P&L Trend" /></Card>
+          {allocationSlices.length > 0 && <Card><AllocationChart slices={allocationSlices} total={allocationTotal} /></Card>}
         </ScrollView>
       ) : (
         <FlashList

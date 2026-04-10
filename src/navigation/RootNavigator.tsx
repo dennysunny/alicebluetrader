@@ -25,9 +25,9 @@ import { SettingsScreen } from '../screens/Settings/SettingsScreen';
 import { OrderConfirmScreen } from '../screens/Trading/OrderConfirmScreen';
 import { OrderEntryScreen } from '../screens/Trading/OrderEntryScreen';
 import { OrderSuccessScreen } from '../screens/Trading/OrderSuccessScreen';
-import { BlurIntensity } from '../types';
+import { BlurIntensity, RootStackParamList } from '../types';
 
-const RootStack = createNativeStackNavigator();
+const RootStack = createNativeStackNavigator<RootStackParamList>();
 const AuthStack = createNativeStackNavigator();
 const MainTab = createBottomTabNavigator();
 
@@ -73,7 +73,7 @@ function CustomTabBar({
         <BlurView
           style={StyleSheet.absoluteFill}
           blurType={isDark ? 'dark' : 'light'}
-          blurAmount={Platform.OS === 'ios' ? 20 : 6} // iOS supports stronger blur, Android uses a more subtle effect
+          blurAmount={Platform.OS === 'ios' ? 20 : 4} // iOS supports stronger blur, Android uses a more subtle effect
           reducedTransparencyFallbackColor={colors.fallback}
         />
 
@@ -184,6 +184,7 @@ function MainNavigator() {
         <CustomTabBar {...(props as Parameters<typeof CustomTabBar>[0])} />
       )}
       screenOptions={{ headerShown: false }}
+      sceneContainerStyle={{ backgroundColor: 'transparent' }}
     >
       <MainTab.Screen name="Dashboard" component={DashboardScreen} />
       <MainTab.Screen name="MarketWatch" component={MarketWatchScreen} />
@@ -243,6 +244,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 24,
     elevation: 18,
+  },
+    transparentbg: {
+    backgroundColor: 'transparent',
   },
   pillContainer: {
     flexDirection: 'row',

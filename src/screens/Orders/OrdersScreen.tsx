@@ -9,6 +9,7 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { Divider, ScreenHeader } from '../../components/common';
 import { ORDER_STATUS_COLORS } from '../../constants';
 import { useTheme } from '../../hooks/useTheme';
@@ -22,8 +23,16 @@ import { formatCurrency, formatDateTime } from '../../utils/formatters';
 
 type TabType = 'orders' | 'open';
 
+/**
+ * Main screen for displaying orders and open orders.
+ * Shows a header with total orders count, tabs to switch between all orders and open orders, and a list of order cards.
+ * Each order card displays order details and allows cancelling open orders.
+ * It fetches orders data from the store on mount and supports pull-to-refresh to reload orders. 
+ * Uses FlashList for efficient rendering of the order list.
+ * @returns - the Orders screen component with header, tabs, and list of orders 
+ */
 export function OrdersScreen() {
-  const { colors, spacing } = useTheme();
+  const { colors, spacing, typography } = useTheme();
   const { fetchOrders, isFetching, cancelOrder } = useOrdersStore();
   const allOrders = useOrders();
   const openOrders = useOpenOrders();
@@ -36,10 +45,7 @@ export function OrdersScreen() {
   const data = activeTab === 'orders' ? allOrders : openOrders;
 
   return (
-    <SafeAreaView
-      style={{ flex: 1, backgroundColor: 'transparent' }}
-      edges={['top']}
-    >
+    <SafeAreaView style={[styles.flex, styles.transparentbg]} edges={['top']}>
       <ScreenHeader
         title="Orders"
         subtitle={`${allOrders.length} orders today`}
@@ -65,7 +71,7 @@ export function OrdersScreen() {
               styles.tab,
               activeTab === tab.key && {
                 borderBottomColor: colors.primary,
-                borderBottomWidth: 2,
+                borderBottomWidth: StyleSheet.hairlineWidth * 4,
               },
             ]}
           >
@@ -73,8 +79,9 @@ export function OrdersScreen() {
               style={{
                 color:
                   activeTab === tab.key ? colors.primary : colors.textSecondary,
-                fontWeight: activeTab === tab.key ? '600' : '400',
-                fontSize: 14,
+                fontWeight:
+                  activeTab === tab.key ? typography['700'] : typography['500'],
+                fontSize: typography.base,
               }}
             >
               {tab.label}
@@ -86,7 +93,7 @@ export function OrdersScreen() {
       <FlashList
         data={data}
         keyExtractor={item => item.orderId}
-        contentContainerStyle={{ paddingBottom: 120 }}
+        contentContainerStyle={styles.bottomPadding}
         estimatedItemSize={100}
         refreshControl={
           <RefreshControl
@@ -104,8 +111,7 @@ export function OrdersScreen() {
             <Text
               style={{
                 color: colors.textMuted,
-                fontSize: 14,
-                textAlign: 'center',
+                fontSize: typography.base,
               }}
             >
               {activeTab === 'open'
@@ -119,10 +125,11 @@ export function OrdersScreen() {
   );
 }
 
-// ============================================================
-// ORDER CARD
-// ============================================================
-
+/**
+ * Card component for displaying individual orders in the orders screen, used in the FlashList renderItem. Shows order details like symbol, status, quantity, price, etc. and allows cancelling open orders.
+ * @param {{ order: Order, onCancel: (id: string) => Promise<void> }} param0 - order: the order data to display, onCancel: function to call when cancelling an order
+ * @returns - a styled card component showing the order details and a cancel button if the order is open
+ */
 const OrderCard = memo(function OrderCard({
   order,
   onCancel,
@@ -130,7 +137,7 @@ const OrderCard = memo(function OrderCard({
   order: Order;
   onCancel: (id: string) => Promise<void>;
 }) {
-  const { colors, spacing, typography, radius } = useTheme();
+  const { colors, spacing, typography, radius, padding, margin } = useTheme();
   const isBuy = order.transactionType === 'BUY';
   const statusColor = ORDER_STATUS_COLORS[order.status] ?? colors.textSecondary;
 
@@ -154,7 +161,7 @@ const OrderCard = memo(function OrderCard({
     >
       {/* Row 1: Symbol + Status */}
       <View style={styles.row}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+        <View style={styles.symbolStatus}>
           <View
             style={[
               styles.sideTag,
@@ -170,7 +177,7 @@ const OrderCard = memo(function OrderCard({
               style={{
                 color: isBuy ? colors.profit : colors.loss,
                 fontSize: typography.xs,
-                fontWeight: '700',
+                fontWeight: typography['700'],
               }}
             >
               {order.transactionType}
@@ -180,7 +187,7 @@ const OrderCard = memo(function OrderCard({
             style={{
               color: colors.text,
               fontSize: typography.md,
-              fontWeight: '600',
+              fontWeight: typography['600'],
             }}
           >
             {order.symbol}
@@ -188,8 +195,8 @@ const OrderCard = memo(function OrderCard({
         </View>
         <View
           style={{
-            paddingHorizontal: 8,
-            paddingVertical: 3,
+            paddingHorizontal: padding.md,
+            paddingVertical: padding.sm,
             borderRadius: radius.full,
             backgroundColor: `${statusColor}18`,
           }}
@@ -198,7 +205,7 @@ const OrderCard = memo(function OrderCard({
             style={{
               color: statusColor,
               fontSize: typography.xs,
-              fontWeight: '600',
+              fontWeight: typography['600'],
             }}
           >
             {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
@@ -207,7 +214,7 @@ const OrderCard = memo(function OrderCard({
       </View>
 
       {/* Row 2: Details */}
-      <View style={[styles.row, { marginTop: 8 }]}>
+      <View style={[styles.row, { marginTop: margin.md }]}>
         <Text style={{ color: colors.textSecondary, fontSize: typography.xs }}>
           {order.exchange} · {order.productType} · {order.orderType}
         </Text>
@@ -217,7 +224,7 @@ const OrderCard = memo(function OrderCard({
       </View>
 
       {/* Row 3: Qty + Price */}
-      <View style={[styles.row, { marginTop: 8 }]}>
+      <View style={[styles.row, { marginTop: margin.md }]}>
         <View style={styles.row}>
           <MetaChip
             label="Qty"
@@ -240,7 +247,7 @@ const OrderCard = memo(function OrderCard({
               style={{
                 color: colors.loss,
                 fontSize: typography.xs,
-                fontWeight: '600',
+                fontWeight: typography['600'],
               }}
             >
               Cancel
@@ -255,7 +262,7 @@ const OrderCard = memo(function OrderCard({
           style={{
             color: colors.loss,
             fontSize: typography.xs,
-            marginTop: 6,
+            marginTop: margin.md,
           }}
         >
           {order.statusMessage}
@@ -265,16 +272,23 @@ const OrderCard = memo(function OrderCard({
   );
 });
 
+/**
+ * For displaying small metadata values like quantity, price, etc. in the order card
+ * @param {{ label: string; value: string }} param0 - label: the type of metadata (e.g. "Qty", "Price"), value: the actual value to display
+ * @returns - a small chip with the label and value, used in the order card for displaying order details
+ */
 function MetaChip({ label, value }: { label: string; value: string }) {
-  const { colors, typography } = useTheme();
+  const { colors, typography, margin } = useTheme();
   return (
-    <View style={{ marginRight: 12 }}>
-      <Text style={{ color: colors.textMuted, fontSize: 10 }}>{label}</Text>
+    <View style={{ marginRight: margin.lg }}>
+      <Text style={{ color: colors.textMuted, fontSize: typography.xs }}>
+        {label}
+      </Text>
       <Text
         style={{
           color: colors.text,
           fontSize: typography.xs,
-          fontWeight: '600',
+          fontWeight: typography['600'],
         }}
       >
         {value}
@@ -289,6 +303,15 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     marginBottom: 4,
   },
+  flex: {
+    flex: 1,
+  },
+  transparentbg: {
+    backgroundColor: 'transparent',
+  },
+  bottomPadding: {
+    paddingBottom: 120,
+  },
   tab: {
     flex: 1,
     alignItems: 'center',
@@ -297,6 +320,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
   },
   orderCard: {},
+  symbolStatus: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',

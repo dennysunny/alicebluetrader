@@ -265,6 +265,11 @@ export interface AppNotification {
 export type RootStackParamList = {
   Auth: undefined;
   Main: undefined;
+  OrderEntry: undefined;
+  OrderConfirm: undefined;
+  OrderSuccess: undefined;
+  Notifications: undefined;
+  InstrumentDetail: { instrument: WatchlistItem };
 };
 
 export type AuthStackParamList = {

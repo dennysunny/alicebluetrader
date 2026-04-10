@@ -27,18 +27,19 @@ export function LoginScreen() {
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<{ userId?: string; password?: string }>({});
 
-  const validate = (): boolean => {
-    const newErrors: typeof errors = {};
-    if (!userId.trim()) newErrors.userId = 'User ID is required';
-    if (!password) newErrors.password = 'Password is required';
-    if (password && password.length < 6)
-      newErrors.password = 'Password must be at least 6 characters';
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
   const handleLogin = useCallback(async () => {
     clearError();
+    
+    const validate = (): boolean => {
+      const newErrors: typeof errors = {};
+      if (!userId.trim()) newErrors.userId = 'User ID is required';
+      if (!password) newErrors.password = 'Password is required';
+      if (password && password.length < 6)
+        newErrors.password = 'Password must be at least 6 characters';
+      setErrors(newErrors);
+      return Object.keys(newErrors).length === 0;
+    };
+    
     if (!validate()) return;
 
     try {
@@ -51,13 +52,13 @@ export function LoginScreen() {
         position: 'bottom',
       });
     }
-  }, [userId, password, login, error, clearError]);
+  }, [clearError, login, userId, password, error]);
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+    <SafeAreaView style={[styles.container, styles.transparentbg]}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{ flex: 1 }}>
+        style={styles.container}>
         <ScrollView
           contentContainerStyle={styles.scroll}
           keyboardShouldPersistTaps="handled"
@@ -175,6 +176,9 @@ export function LoginScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
+  transparentbg: {
+    backgroundColor: 'transparent',
+  },
   scroll: {
     flexGrow: 1,
     paddingHorizontal: 24,

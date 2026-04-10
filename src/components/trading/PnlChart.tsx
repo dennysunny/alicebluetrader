@@ -65,7 +65,7 @@ export const PnlChart = memo(function PnlChart({ data, title }: PnlChartProps) {
 
   if (data.length === 0) {
     return (
-      <View style={[styles.container, { backgroundColor: colors.surface, borderRadius: radius.lg, borderColor: colors.border }]}>
+      <View style={[styles.container, { backgroundColor: 'transparent', borderRadius: radius.lg, borderColor: colors.border }]}>
         <Text style={{ color: colors.textMuted, textAlign: 'center', padding: 32, fontSize: typography.sm }}>
           No P&L history available
         </Text>
@@ -87,7 +87,7 @@ export const PnlChart = memo(function PnlChart({ data, title }: PnlChartProps) {
   const chartData = data.map((d, i) => ({ x: i, y: d.pnl }));
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.surface, borderRadius: radius.lg, borderColor: colors.border }]}>
+    <View style={[styles.container, { backgroundColor: 'transparent', borderRadius: radius.lg, borderColor: colors.border }]}>
       {/* Header */}
       <View style={{ padding: spacing.base, paddingBottom: 8 }}>
         {title && (
@@ -220,7 +220,7 @@ export const AllocationChart = memo(function AllocationChart({
   const { colors, spacing, typography, radius } = useTheme();
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.surface, borderRadius: radius.lg, borderColor: colors.border, padding: spacing.base }]}>
+    <View style={[styles.container, { backgroundColor: 'transparent', borderRadius: radius.lg, borderColor: colors.border, padding: spacing.base }]}>
       <Text style={{ color: colors.text, fontSize: typography.md, fontWeight: '600', marginBottom: 12 }}>
         Portfolio Allocation
       </Text>
