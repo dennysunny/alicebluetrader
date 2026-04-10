@@ -10,6 +10,7 @@ import {
   Padding,
   FlexTypes,
   LetterSpacing,
+  Border,
 } from '../constants/theme';
 
 // ============================================================
@@ -38,7 +39,8 @@ export function useTheme() {
       margin: Margin,
       padding: Padding,
       flexTypes: FlexTypes,
-      letterSpacing: LetterSpacing
+      letterSpacing: LetterSpacing,
+      border: Border
     };
   }, [mode]);
 

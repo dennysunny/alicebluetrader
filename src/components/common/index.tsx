@@ -106,6 +106,7 @@ interface ButtonProps {
   loading?: boolean;
   disabled?: boolean;
   style?: ViewStyle;
+  halfWidth?: boolean;
   fullWidth?: boolean;
 }
 
@@ -117,9 +118,10 @@ export const Button = memo(function Button({
   loading = false,
   disabled = false,
   style,
+  halfWidth = false,
   fullWidth = false,
 }: ButtonProps) {
-  const { colors, radius, typography, shadow } = useTheme();
+  const { colors, letterSpacing, radius, typography, shadow } = useTheme();
   const scale = useSharedValue(1);
 
   const animStyle = useAnimatedStyle(() => ({
@@ -128,21 +130,18 @@ export const Button = memo(function Button({
 
   const config: Record<
     string,
-    { bg: string; text: string; border?: string; shadow?: object }
+    { bg?: string; text: string; border?: string; shadow?: object }
   > = {
     primary: {
-      bg: colors.primary,
       text: colors.textInverse,
       shadow: shadow.glow,
     },
     secondary: {
-      bg: colors.surfaceElevated,
       text: colors.text,
       border: colors.border,
     },
     danger: {
-      bg: `${colors.loss}22`,
-      text: colors.loss,
+      text: colors.text,
       border: `${colors.loss}40`,
     },
     ghost: {
@@ -161,7 +160,7 @@ export const Button = memo(function Button({
   }[size];
 
   return (
-    <Animated.View style={[animStyle, fullWidth && { width: '100%' }]}>
+    <Animated.View style={[animStyle, fullWidth && { width: '100%' }, halfWidth && { width: '50%' }]}>
       <TouchableOpacity
         onPress={onPress}
         onPressIn={() => {
@@ -196,7 +195,7 @@ export const Button = memo(function Button({
               : variant === 'secondary'
               ? [...colors.secondaryButtonGradient]
               : variant === 'danger'
-              ? [...colors.dangerButtonGradient]
+              ? [...colors.dangerButtonGradient,]
               : ['transparent', 'transparent']
           }
           start={{ x: 1, y: 0.5 }}
@@ -208,15 +207,15 @@ export const Button = memo(function Button({
         {loading ? (
           <ActivityIndicator
             size="small"
-            color={variant === 'primary' ? colors.textInverse : colors.primary}
+            color= {colors.textInverse}
           />
         ) : (
           <Text
             style={{
               color: c.text,
               fontSize,
-              fontWeight: '600',
-              letterSpacing: 0.2,
+              fontWeight: typography['700'],
+              letterSpacing: letterSpacing.normalWide,
               zIndex: 1,
             }}
           >

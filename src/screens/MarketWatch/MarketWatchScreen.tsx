@@ -156,9 +156,9 @@ export function MarketWatchScreen() {
           >
             <Text
               style={{
-                color: colors.primary,
-                fontWeight: typography['600'],
-                fontSize: typography.sm,
+                color: colors.primaryDark,
+                fontWeight: typography['700'],
+                fontSize: typography.base,
               }}
             >
               {isSearchMode ? 'Cancel' : '+ Add'}

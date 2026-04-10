@@ -73,7 +73,7 @@ export const CandleChart = memo(function CandleChart({
       style={[
         styles.container,
         {
-          backgroundColor: colors.surface,
+          backgroundColor: 'transparent',
           borderRadius: radius.lg,
           borderWidth: StyleSheet.hairlineWidth,
           borderColor: colors.border,

@@ -81,7 +81,7 @@ export const Colors = {
 
     primaryButtonGradient: ['#08aace', '#08b032'],
     secondaryButtonGradient: ['#ffffffe6', '#ffffffb3'],
-    dangerButtonGradient: ['#FF6B6B', '#DC2626'],
+    dangerButtonGradient: ['#fb5b21', '#DC2626'],
 
     profit: '#16A34A',
     loss: '#DC2626',
@@ -108,6 +108,7 @@ export const Typography = {
   '3xl': 30,
   '4xl': 34,
   '5xl': 42,
+  '6xl': 48,
 
   tight: 1.2,
   normal: 1.5,
@@ -139,6 +140,12 @@ export const LetterSpacing = {
   wide: 0.5,
 } as const;
 
+export const Border = {
+  thin: 1,
+  medium: 1.5,
+  thick: 2,
+} as const;
+
 export const Radius = {
   xxs: 4,
   xs: 6,
@@ -160,6 +167,8 @@ export const Margin = {
   lg: 12,
   xl: 16,
   '2xl': 24,
+  '3xl': 28,
+  '4xl': 32
 } as const;
 
 export const Padding = {
