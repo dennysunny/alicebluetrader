@@ -1,4 +1,5 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+## Alice Blue Trader — 
+Production-grade React Native trading app built with TypeScript, Zustand, and the Alice Blue ANT API. Features real-time WebSocket market data, live watchlist, order placement, portfolio tracking, and a frosted glass UI inspired by iOS design.
 
 # Getting Started
 
