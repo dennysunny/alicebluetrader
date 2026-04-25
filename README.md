@@ -1,5 +1,16 @@
-## Alice Blue Trader — 
+## Alice Blue Trader
 Production-grade React Native trading app built with TypeScript, Zustand, and the Alice Blue ANT API. Features real-time WebSocket market data, live watchlist, order placement, portfolio tracking, and a frosted glass UI inspired by iOS design.
+
+## Screenshots
+<img width="1080" height="2340" alt="Screenshot_20260409-233637_alicebluetrader" src="https://github.com/user-attachments/assets/80e9f95e-c8d1-471a-a7d5-cc48534e0b76" />
+<img width="1080" height="2340" alt="Screenshot_20260409-235103_alicebluetrader" src="https://github.com/user-attachments/assets/e6aeb546-93dd-4357-bf6b-22b9c5c34908" />
+<img width="1080" height="2340" alt="Screenshot_20260409-235113_alicebluetrader" src="https://github.com/user-attachments/assets/16acb61a-faba-4b2a-acd9-b2cf882d488c" />
+<img width="1080" height="2340" alt="Screenshot_20260410-200710_alicebluetrader" src="https://github.com/user-attachments/assets/23248cc9-34ce-402f-b0c7-203d7f347ac7" />
+<img width="1080" height="2340" alt="Screenshot_20260410-200704_alicebluetrader" src="https://github.com/user-attachments/assets/ad1dfcc3-46aa-4114-a1f7-270b48ec80d0" />
+<img width="1080" height="2340" alt="Screenshot_20260409-233615_alicebluetrader" src="https://github.com/user-attachments/assets/04ed93e2-72c0-40d5-bf5a-e864d5aea63c" />
+<img width="1080" height="2340" alt="Screenshot_20260409-233618_alicebluetrader" src="https://github.com/user-attachments/assets/d09e7acc-c9a3-4127-8a61-ffaa6cc68c93" />
+<img width="1080" height="2340" alt="Screenshot_20260409-235148_alicebluetrader" src="https://github.com/user-attachments/assets/d1b6dc5f-b4dc-4ea6-ad2e-ccc5a2e9daa0" />
+
 
 # Getting Started
 
